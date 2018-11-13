@@ -1,0 +1,1 @@
+Aplicação web para apontamento de tempos do setor de desenvolvimento de software.
