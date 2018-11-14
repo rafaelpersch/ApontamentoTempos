@@ -6,6 +6,7 @@ using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ApontamentoTempos.API.Controllers
 {
@@ -15,9 +16,9 @@ namespace ApontamentoTempos.API.Controllers
     {
         private readonly MyDbContext context;
 
-        public ProjetoController(MyDbContext context)
+        public ProjetoController(IConfiguration config)
         {
-            this.context = context;
+            this.context = new MyDbContext(config["ConnectionString"]);
         }
 
         // GET: api/Projetos
@@ -110,6 +111,11 @@ namespace ApontamentoTempos.API.Controllers
                 if (projeto == null)
                 {
                     return BadRequest("Projeto não encontrado!");
+                }
+
+                if (context.ApontamentosTempo.Where(b => b.ProjetoId == id).FirstOrDefault() != null)
+                {
+                    return BadRequest("Projeto com tempos já apontados!");
                 }
 
                 context.Projetos.Remove(projeto);
