@@ -121,7 +121,7 @@ namespace ApontamentoTempos.API.Controllers
                 context.Projetos.Remove(projeto);
                 await context.SaveChangesAsync();
 
-                return Ok(projeto);
+                return Ok();
             }
             catch (Exception ex)
             {
