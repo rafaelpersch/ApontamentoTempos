@@ -18,7 +18,7 @@ namespace ApontamentoTempos.API.Model
         [Required]
         public string Senha { get; set; }
 
-        public void Validate()
+        public void Validar()
         {
             if (this.Id == Guid.Empty)
             {

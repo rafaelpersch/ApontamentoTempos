@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
 using Microsoft.AspNetCore.Mvc;
+using ApontamentoTempos.API.Filter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -21,7 +22,7 @@ namespace ApontamentoTempos.API.Controllers
             this.context = new MyDbContext(config["ConnectionString"]);
         }
 
-        // GET: api/Projetos
+        [MyActionFilter]
         [HttpGet]
         public IEnumerable<Projeto> GetProjetos()
         {
@@ -35,7 +36,6 @@ namespace ApontamentoTempos.API.Controllers
             }
         }
 
-        // GET: api/Projetos/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProjeto([FromRoute] Guid id)
         {
@@ -56,7 +56,6 @@ namespace ApontamentoTempos.API.Controllers
             }
         }
 
-        // PUT: api/Projetos/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProjeto([FromRoute] Guid id, [FromBody] Projeto projeto)
         {
@@ -81,7 +80,6 @@ namespace ApontamentoTempos.API.Controllers
             }
         }
 
-        // POST: api/Projetos
         [HttpPost]
         public async Task<IActionResult> PostProjeto([FromBody] Projeto projeto)
         {
@@ -101,7 +99,6 @@ namespace ApontamentoTempos.API.Controllers
             }
         }
 
-        // DELETE: api/Projetos/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProjeto([FromRoute] Guid id)
         {

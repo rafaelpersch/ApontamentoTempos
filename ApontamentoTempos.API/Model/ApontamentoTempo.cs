@@ -46,7 +46,7 @@ namespace ApontamentoTempos.API.Model
         [Column(TypeName = "text")]
         public string Observacao { get; set; }
 
-        public void Validate()
+        public void Validar()
         {
             if (this.Id == Guid.Empty)
             {

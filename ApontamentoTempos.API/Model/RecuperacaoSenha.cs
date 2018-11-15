@@ -14,7 +14,7 @@ namespace ApontamentoTempos.API.Model
         public DateTime Data { get; set; }
         public bool Usado { get; set; }
 
-        public void Validate()
+        public void Validar()
         {
             if (this.Id == Guid.Empty)
             {
