@@ -91,9 +91,6 @@ namespace ApontamentoTempos.API.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnName("data");
 
-                    b.Property<bool>("Usado")
-                        .HasColumnName("usado");
-
                     b.Property<Guid>("UsuarioId")
                         .HasColumnName("usuario_id");
 

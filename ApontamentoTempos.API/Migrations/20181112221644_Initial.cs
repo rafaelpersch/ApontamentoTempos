@@ -70,8 +70,7 @@ namespace ApontamentoTempos.API.Migrations
                 {
                     id = table.Column<Guid>(nullable: false),
                     usuario_id = table.Column<Guid>(nullable: false),
-                    data = table.Column<DateTime>(nullable: false),
-                    usado = table.Column<bool>(nullable: false)
+                    data = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

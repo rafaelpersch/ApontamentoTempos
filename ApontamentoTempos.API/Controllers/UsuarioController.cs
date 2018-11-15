@@ -20,5 +20,12 @@ namespace ApontamentoTempos.API.Controllers
         {
             this.context = new MyDbContext(config["ConnectionString"]);
         }
+
+        //Token?
+        //Login
+        //Logout
+        //Registre-se
+        //Trocar senha
+        //Get(logado)
     }
 }
