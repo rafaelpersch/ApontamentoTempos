@@ -94,9 +94,11 @@ namespace ApontamentoTempos.API.Controllers
 
                 context.RecuperacoesSenha.Remove(reset);
 
-                //fazer o mexe no usuário
+                var usuario = await context.Usuarios.FindAsync(reset.UsuarioId);
 
-                //context.Entry(projeto).State = EntityState.Modified;
+                usuario.Senha = novaSenha;
+
+                context.Entry(usuario).State = EntityState.Modified;
 
                 await context.SaveChangesAsync();
 
@@ -107,7 +109,5 @@ namespace ApontamentoTempos.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        //RecoveryPassword(Guid id, string newPassword)
     }
 }
