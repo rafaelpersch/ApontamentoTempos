@@ -31,11 +31,18 @@
 </template>
 
 <script>
+
+import ProjetoService from '../services/ProjetoService';
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  }
+  },
+  created() {
+      this.service = new ProjetoService(this.$http);
+      this.service.teste();
+  },
 }
 </script>
 

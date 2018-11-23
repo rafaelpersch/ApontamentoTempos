@@ -31,7 +31,7 @@ Vue.use(VeeValidate, {
   }
 });
 
-Vue.http.options.root = 'http://localhost:62137';
+Vue.http.options.root = 'https://localhost:5001';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
 
 Vue.config.productionTip = false
