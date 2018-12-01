@@ -1,43 +1,89 @@
 <template>
-    <div id="login" class="text-center login-back">
-        <form class="form-signin">
-            <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
-            <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
-            <br>
-            <div class="col text-left">
-                <h5>Email</h5>
-            </div>            
-            <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
-            <div class="col text-left">
-                <h5>Senha</h5>
-            </div>
-            <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password">
-            <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="login()">Entrar</button>
-            <div class="col text-right">
-                <router-link to="/forgotyourpassword" class="badge">Esqueceu sua senha?</router-link>
-            </div>
-            <div class="col text-right">
-                <router-link to="/registeraccount" class="badge">Cadastre-se!</router-link>
-            </div>                        
-            <p class="mt-5 mb-3 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
-        </form>
+    <div>
+        <div v-if="telaLogin" id="login" class="text-center login-back">
+            <form class="form-signin">
+                <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
+                <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
+                <br>
+                <div class="col text-left">
+                    <h5>Email</h5>
+                </div>            
+                <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
+                <div class="col text-left">
+                    <h5>Senha</h5>
+                </div>
+                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password">
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarLogin()">Entrar</button>
+                <div class="col text-right">
+                    <router-link to="#" class="badge"><span v-on:click="esqueceuSuaSenha()">Esqueceu sua senha?</span></router-link>
+                </div>
+                <div class="col text-right">
+                    <router-link to="#" class="badge"><span v-on:click="cadastrese()">Cadastre-se!</span></router-link>
+                </div>                    
+                <p class="mt-5 mb-3 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
+            </form>
+        </div>
+        <div v-if="telaCadastrese" id="cadastrese" class="text-center login-back">
+            <form class="form-signin">
+                <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
+                <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
+                <br>
+                <div class="col text-left">
+                    <h5>Nome</h5>
+                </div>            
+                <input id="nome" class="form-control" placeholder="Nome" required autofocus="" type="text" name="nome" v-model="input.nome">
+                <div class="col text-left">
+                    <h5>Email</h5>
+                </div>            
+                <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
+                <div class="col text-left">
+                    <h5>Senha</h5>
+                </div>
+                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password">
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarLogin()">Cadastre-se</button>
+                <div class="col text-right">
+                    <router-link to="#" class="badge"><span v-on:click="login()">Voltar</span></router-link>
+                </div>                        
+                <p class="mt-5 mb-3 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
+            </form>
+        </div>
+        <div v-if="telaEsqueceuSuaSenha" id="esqueceusuasenha" class="text-center login-back">
+            <form class="form-signin">
+                <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
+                <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
+                <br>
+                <div class="col text-left">
+                    <h5>Email</h5>
+                </div>            
+                <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarLogin()">Recuperar Senha</button>
+                <div class="col text-right">
+                    <router-link to="#" class="badge"><span v-on:click="login()">Voltar</span></router-link>
+                </div>                        
+                <p class="mt-5 mb-3 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
+            </form>
+        </div>
     </div>
+    
 </template>
 
 <script>
 
     export default {
-        name: 'Login',
         data() {
             return {
                 input: {
+                    nome: "",
                     email: "",
                     password: ""
-                }
+                },
+                telaLogin: true,
+                telaEsqueceuSuaSenha: false,
+                telaCadastrese: false
             }
         },
         methods: {
-            login() {
+            efetuarLogin() {
                 if(this.input.email != "" && this.input.password != "") {
                     if(this.input.email == "teste@teste.com" && this.input.password == "111") {
                         this.$emit("authenticated", true);
@@ -48,6 +94,21 @@
                 } else {
                     //console.log("A email and password must be present");
                 }
+            },
+            login(){
+                this.telaCadastrese = false;
+                this.telaEsqueceuSuaSenha = false;
+                this.telaLogin = true;
+            },
+            esqueceuSuaSenha(){
+                this.telaLogin = false;
+                this.telaCadastrese = false;
+                this.telaEsqueceuSuaSenha = true;
+            },
+            cadastrese(){
+                this.telaLogin = false;
+                this.telaEsqueceuSuaSenha = false;
+                this.telaCadastrese = true;
             }
         },
         created() {
