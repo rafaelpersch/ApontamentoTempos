@@ -21,6 +21,44 @@ namespace ApontamentoTempos.API.Controllers
             this.context = new MyDbContext(config["ConnectionString"]);
         }
 
+        public async Task<IActionResult> PostUsuario([FromBody] Usuario usuario)
+        {
+            try
+            {
+                usuario.Id = Guid.NewGuid();
+                usuario.Validar();
+
+                context.Usuarios.Add(usuario);
+                await context.SaveChangesAsync();
+
+                return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUsuario([FromRoute] Guid id)
+        {
+            try
+            {
+                var usuario = await context.Usuarios.FindAsync(id);
+
+                if (usuario == null)
+                {
+                    return BadRequest("Usuário não encontrado!");
+                }
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //Token?
         //Login
         //Logout
