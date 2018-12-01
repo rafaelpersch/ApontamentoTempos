@@ -40,7 +40,7 @@
                     <h5>Senha</h5>
                 </div>
                 <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password">
-                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarLogin()">Cadastre-se</button>
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarCadastro()">Cadastre-se</button>
                 <div class="col text-right">
                     <router-link to="#" class="badge"><span v-on:click="login()">Voltar</span></router-link>
                 </div>                        
@@ -56,7 +56,7 @@
                     <h5>Email</h5>
                 </div>            
                 <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
-                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarLogin()">Recuperar Senha</button>
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarRecuperacaoSenha()">Recuperar Senha</button>
                 <div class="col text-right">
                     <router-link to="#" class="badge"><span v-on:click="login()">Voltar</span></router-link>
                 </div>                        
@@ -94,6 +94,29 @@
                 } else {
                     //console.log("A email and password must be present");
                 }
+            },
+            efetuarCadastro(){
+                /*this.$validator
+                .validateAll()
+                .then(success => {
+                    if(success) {
+
+                    }
+                });*/
+
+                let user = { 
+                    Nome: this.input.nome, 
+                    Email: this.input.email, 
+                    Senha: this.input.password 
+                };
+
+                this.$http.post('api/Usuario', user)
+                    .then((response) => {
+                    alert(response.body);
+                });
+            },
+            efetuarRecuperacaoSenha(){
+
             },
             login(){
                 this.telaCadastrese = false;
