@@ -8,11 +8,13 @@
                 <div class="col text-left">
                     <h5>Email</h5>
                 </div>            
-                <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
+                <input id="email" class="form-control" placeholder="E-mail" required autofocus name="email" v-model="input.email" v-validate data-vv-rules="required|email">
+                <span class="erro" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 <div class="col text-left">
                     <h5>Senha</h5>
                 </div>
-                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password">
+                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password" v-validate data-vv-rules="required" ref="password">
+                <span class="erro" v-show="errors.has('password')">{{ errors.first('password') }}</span>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarLogin()">Entrar</button>
                 <div class="col text-right">
                     <router-link to="#" class="badge"><span v-on:click="esqueceuSuaSenha()">Esqueceu sua senha?</span></router-link>
@@ -31,15 +33,18 @@
                 <div class="col text-left">
                     <h5>Nome</h5>
                 </div>            
-                <input id="nome" class="form-control" placeholder="Nome" required autofocus="" type="text" name="nome" v-model="input.nome">
+                <input id="nome" class="form-control" placeholder="Nome" required name="nome" v-model="input.nome" v-validate data-vv-rules="required">
+                <span class="erro" v-show="errors.has('nome')">{{ errors.first('nome') }}</span>
                 <div class="col text-left">
                     <h5>Email</h5>
                 </div>            
-                <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
+                <input id="email" class="form-control" placeholder="E-mail" required type="email" name="email" v-model="input.email" v-validate data-vv-rules="required|email">
+                <span class="erro" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 <div class="col text-left">
                     <h5>Senha</h5>
                 </div>
-                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password">
+                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password" v-validate data-vv-rules="required">
+                <span class="erro" v-show="errors.has('password')">{{ errors.first('password') }}</span>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarCadastro()">Cadastre-se</button>
                 <div class="col text-right">
                     <router-link to="#" class="badge"><span v-on:click="login()">Voltar</span></router-link>
@@ -55,7 +60,8 @@
                 <div class="col text-left">
                     <h5>Email</h5>
                 </div>            
-                <input id="email" class="form-control" placeholder="E-mail" required autofocus="" type="email" name="email" v-model="input.email">
+                <input id="email" class="form-control" placeholder="E-mail" required autofocus type="email" name="email" v-model="input.email" v-validate data-vv-rules="required|email">
+                <span class="erro" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="efetuarRecuperacaoSenha()">Recuperar Senha</button>
                 <div class="col text-right">
                     <router-link to="#" class="badge"><span v-on:click="login()">Voltar</span></router-link>
@@ -96,23 +102,20 @@
                 }
             },
             efetuarCadastro(){
-                /*this.$validator
-                .validateAll()
-                .then(success => {
+                this.$validator.validateAll().then(success => {
                     if(success) {
 
+                        let user = { 
+                            Nome: this.input.nome, 
+                            Email: this.input.email, 
+                            Senha: this.input.password 
+                        };
+
+                        this.$http.post('api/Usuario', user)
+                            .then((response) => {
+                            alert(response.body);
+                        });
                     }
-                });*/
-
-                let user = { 
-                    Nome: this.input.nome, 
-                    Email: this.input.email, 
-                    Senha: this.input.password 
-                };
-
-                this.$http.post('api/Usuario', user)
-                    .then((response) => {
-                    alert(response.body);
                 });
             },
             efetuarRecuperacaoSenha(){
@@ -182,18 +185,9 @@
         padding: 10px;
         font-size: 16px;
     }
-    .form-signin .form-control:focus {
-        z-index: 2;
-    }
-    .form-signin input[type="email"] {
-        margin-bottom: -1px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-    .form-signin input[type="password"] {
-        margin-bottom: 10px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
+
+    .erro {
+        color: red;
+    } 
 
 </style>
