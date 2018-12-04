@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-center login-back">
-            <form class="form-signin">
+            <form class="form-signin" v-on:keyup.enter="cadastreSe()">
                 <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
                 <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
                 <br>
@@ -25,7 +25,11 @@
                 </div>
                 <input id="repetirSenha" class="form-control" placeholder="Repetir Senha" required type="password" name="repetirSenha" v-model="input.repetirSenha" v-validate data-vv-rules="required|confirmed:senha">                        
                 <span class="erro" v-show="errors.has('repetirSenha')">{{ errors.first('repetirSenha') }}</span>
-                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="cadastreSe()">Cadastre-se</button>
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="cadastreSe()" :disabled="input.disable">Cadastre-se</button>
+                <br>
+                <b-col sm="12" v-if="input.disable">
+                    <clip-loader></clip-loader>       
+                </b-col>
                 <div class="col text-right">
                     <router-link to="/" class="badge">Voltar</router-link>
                 </div>                        
@@ -37,8 +41,12 @@
 </template>
 
 <script>
-
+    import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
+    
     export default {
+        components: {
+            ClipLoader 
+        },
         data() {
             return {
                 input: {
@@ -46,6 +54,7 @@
                     email: "",
                     senha: "",
                     repetirSenha: "",
+                    disable: false
                 },
             }
         },
@@ -53,6 +62,8 @@
             cadastreSe(){
                 this.$validator.validateAll().then(success => {
                     if(success) {
+                        
+                        this.input.disable = true;
 
                         let user = { 
                             Nome: this.input.nome, 
@@ -64,6 +75,8 @@
                             .then((response) => {
                             alert(response.body);
                         });
+
+                        this.input.disable = false;
                     }
                 });
             }
