@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
@@ -28,10 +30,22 @@ namespace ApontamentoTempos.API.Controllers
                 usuario.Id = Guid.NewGuid();
                 usuario.Validar();
 
+                List<Usuario> users = context.Usuarios.Where(x => x.Email.Trim().ToLower() == usuario.Email.Trim().ToLower()).ToList();
+
+                if (users != null)
+                {
+                    if (users.Count > 0)
+                    {
+                        throw new ApplicationException("Já existe um usuário com esse e-mail!");
+                    }
+                }
+
+                usuario.Senha = Cryptography(usuario.Senha);
+
                 context.Usuarios.Add(usuario);
                 await context.SaveChangesAsync();
 
-                return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -56,6 +70,18 @@ namespace ApontamentoTempos.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        private static string Cryptography(string password)
+        {
+            // SHA512 is disposable by inheritance.  
+            using (var sha256 = SHA256.Create())
+            {
+                // Send a sample text to hash.  
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                // Get the hashed string.  
+                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
             }
         }
 
