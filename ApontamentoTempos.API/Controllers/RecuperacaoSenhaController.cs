@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
+using ApontamentoTempos.API.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -75,7 +76,7 @@ namespace ApontamentoTempos.API.Controllers
             }
         }
 
-        /*
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRecuperacaoSenha([FromRoute] Guid id, [FromBody] Guid idRecuperacao, [FromBody] string novaSenha)
         {
@@ -97,7 +98,7 @@ namespace ApontamentoTempos.API.Controllers
 
                 var usuario = await context.Usuarios.FindAsync(reset.UsuarioId);
 
-                usuario.Senha = novaSenha;
+                usuario.Senha = Cryptography.Encrypt(novaSenha);
 
                 context.Entry(usuario).State = EntityState.Modified;
 
@@ -109,6 +110,6 @@ namespace ApontamentoTempos.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+        }
     }
 }

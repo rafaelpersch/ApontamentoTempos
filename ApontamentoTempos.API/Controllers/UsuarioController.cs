@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
+using ApontamentoTempos.API.Tools;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ApontamentoTempos.API.Security;
 
 namespace ApontamentoTempos.API.Controllers
 {
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : Controller
@@ -22,6 +24,8 @@ namespace ApontamentoTempos.API.Controllers
             this.context = new MyDbContext(config["ConnectionString"]);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> PostUsuario([FromBody] Usuario usuario)
         {
             try
@@ -39,7 +43,7 @@ namespace ApontamentoTempos.API.Controllers
                     }
                 }
 
-                usuario.Senha = Cryptography(usuario.Senha);
+                usuario.Senha = Cryptography.Encrypt(usuario.Senha);
 
                 context.Usuarios.Add(usuario);
                 await context.SaveChangesAsync();
@@ -72,23 +76,27 @@ namespace ApontamentoTempos.API.Controllers
             }
         }
 
-        private static string Cryptography(string password)
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Login([FromBody]Usuario usuario, [FromServices]SigningConfigurations signingConfigurations, [FromServices]TokenConfigurations tokenConfigurations)
         {
-            // SHA512 is disposable by inheritance.  
-            using (var sha256 = SHA256.Create())
+            bool credenciaisValidas = false;
+
+            Usuario usuarioCadatrado = context.Usuarios.Where(x => x.Email == usuario.Email && x.Senha == Cryptography.Encrypt(usuario.Senha)).FirstOrDefault();
+
+            if (usuarioCadatrado != null)
             {
-                // Send a sample text to hash.  
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                // Get the hashed string.  
-                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                credenciaisValidas = true;
+            }
+
+            if (credenciaisValidas)
+            {
+                return Ok(TokenConfigurations.GenerateToken(usuario.Id.ToString(), signingConfigurations, tokenConfigurations));
+            }
+            else
+            {
+                return BadRequest("Falha de login!");
             }
         }
-
-        //Token?
-        //Login
-        //Logout
-        //Registre-se
-        //Trocar senha
-        //Get(logado)
     }
 }

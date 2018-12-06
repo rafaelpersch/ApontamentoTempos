@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using ApontamentoTempos.API.Filter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApontamentoTempos.API.Controllers
 {
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjetoController : Controller
