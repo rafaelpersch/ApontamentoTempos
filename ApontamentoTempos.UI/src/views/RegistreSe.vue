@@ -72,12 +72,19 @@
                         };
 
 
-                        this.$http.post('api/Usuario', user).then(response => {
+                        this.$http.post('api/Usuario', user).then(res => {
 
-                            this.$toast.success({
-                                title:'Success',
-                                message: "Usuário registrado com sucesso!",
-                            });
+                            if (res.status == 200){
+                                this.$toast.success({
+                                    title:'Success',
+                                    message: "Usuário registrado com sucesso!",
+                                });                                
+                            }else{
+                                this.$toast.error({
+                                    title:'Erro',
+                                    message: res.body,
+                                });                                
+                            }
                             
                             this.input.disable = false;
 
@@ -89,12 +96,12 @@
 
                             if (err.status == 400){
                                 this.$toast.error({
-                                    title:'Validation',
+                                    title:'Validação',
                                     message: err.body,
                                 });
                             }else{
                                 this.$toast.error({
-                                    title:'Error',
+                                    title:'Erro',
                                     message: err.body,
                                 });
                             }
