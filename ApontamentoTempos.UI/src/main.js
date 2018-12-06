@@ -12,16 +12,21 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 
+Vue.use(BootstrapVue);
+Vue.use(VueRouter);
+Vue.use(VueResource);
+
 var toastrConfigs = {
   position: 'top full width',
   showDuration: 500,
   delay: 10
 };
 
-Vue.use(BootstrapVue);
-Vue.use(VueRouter);
-Vue.use(VueResource);
 Vue.use(CxltToastr, toastrConfigs);
+
+Vue.http.options.root = 'https://localhost:5001';
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
+
 Vue.use(VeeValidate, {
   locale: 'pt_BR',
   dictionary: {
@@ -30,9 +35,6 @@ Vue.use(VeeValidate, {
     }
   }
 });
-
-Vue.http.options.root = 'https://localhost:5001';
-Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
 
 Vue.config.productionTip = false
 

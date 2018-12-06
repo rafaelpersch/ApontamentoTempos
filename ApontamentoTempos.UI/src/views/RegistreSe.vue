@@ -71,12 +71,34 @@
                             Senha: this.input.senha 
                         };
 
-                        this.$http.post('api/Usuario', user)
-                            .then((response) => {
-                            alert(response.body);
-                        });
 
-                        this.input.disable = false;
+                        this.$http.post('api/Usuario', user).then(response => {
+
+                            this.$toast.success({
+                                title:'Success',
+                                message: "Usuário registrado com sucesso!",
+                            });
+                            
+                            this.input.disable = false;
+
+                            this.$router.replace({ name: "Home" });
+
+                        }, err => {
+
+                            this.input.disable = false;
+
+                            if (err.status == 400){
+                                this.$toast.error({
+                                    title:'Validation',
+                                    message: err.body,
+                                });
+                            }else{
+                                this.$toast.error({
+                                    title:'Error',
+                                    message: err.body,
+                                });
+                            }
+                        });
                     }
                 });
             }
