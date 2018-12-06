@@ -65,7 +65,7 @@ namespace ApontamentoTempos.API.Controllers
                 context.ApontamentosTempo.Add(apontamento);
                 await context.SaveChangesAsync();
 
-                return CreatedAtAction("GetApontamentoTempo", new { id = apontamento.Id }, apontamento);
+                return Ok();
             }
             catch (Exception ex)
             {

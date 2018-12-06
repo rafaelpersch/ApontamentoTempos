@@ -91,7 +91,7 @@ namespace ApontamentoTempos.API.Controllers
                 context.Projetos.Add(projeto);
                 await context.SaveChangesAsync();
 
-                return CreatedAtAction("GetProjeto", new { id = projeto.Id }, projeto);
+                return Ok();
             }
             catch (Exception ex)
             {

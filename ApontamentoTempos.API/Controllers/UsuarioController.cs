@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace ApontamentoTempos.API.Controllers
