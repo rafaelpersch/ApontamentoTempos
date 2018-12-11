@@ -1,10 +1,10 @@
 export default class SessionService {
 
     get() {
-        return JSON.parse(localStorage.getItem('ApontamentoTemposNene') || '[]')
+        return JSON.parse(localStorage.getItem('ApontamentoTempos') || '[]')
     }  
 
     set(token) {
-        localStorage.setItem('ApontamentoTemposNene', JSON.stringify(token));
+        localStorage.setItem('ApontamentoTempos', JSON.stringify(token));
     }
 }

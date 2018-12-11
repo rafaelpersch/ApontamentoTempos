@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-center login-back">
-            <form class="form-signin">
+            <form class="form-signin"  v-on:keyup.enter="login()">
                 <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
                 <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
                 <br>
@@ -13,9 +13,13 @@
                 <div class="col text-left">
                     <h5>Senha</h5>
                 </div>
-                <input id="password" class="form-control" placeholder="Senha" required type="password" name="password" v-model="input.password" v-validate data-vv-rules="required" ref="password">
-                <span class="erro" v-show="errors.has('password')">{{ errors.first('password') }}</span>
-                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="login()">Entrar</button>
+                <input id="senha" class="form-control" placeholder="Senha" required type="password" name="senha" v-model="input.senha" v-validate data-vv-rules="required" ref="senha">
+                <span class="erro" v-show="errors.has('senha')">{{ errors.first('senha') }}</span>
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="login()" :disabled="input.disable">Entrar</button>
+                <br>
+                <b-col sm="12" v-if="input.disable">
+                    <clip-loader></clip-loader>       
+                </b-col>
                 <div class="col text-right">
                     <router-link to="/EsqueciMinhaSenha" class="badge">Esqueceu sua senha?</router-link>
                 </div>
@@ -31,33 +35,82 @@
 
 <script>
 
+    import SessionService from '../services/SessionService';
+    import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
+
     export default {
+        components: {
+            ClipLoader 
+        },
         data() {
             return {
                 input: {
                     email: "",
-                    password: ""
+                    senha: "",
+                    disable: false
                 }
             }
         },
         methods: {
             login(){
-                alert("Vai ser implementado")
+                //alert(this.sessionService.get());    
 
                 /*
-                if(this.input.email != "" && this.input.password != "") {
-                    if(this.input.email == "teste@teste.com" && this.input.password == "111") {
-                        this.$emit("authenticated", true);
-                        this.$router.replace({ name: "secure" });
-                    } else {
-                        //console.log("The email and / or password is incorrect");
-                    }
-                } else {
-                    //console.log("A email and password must be present");
-                }                
+                    this.$emit("authenticated", true);
+                    this.$router.replace({ name: "secure" });         
                 */
+                this.$validator.validateAll().then(success => {
+                    if(success) {
+                        
+                        this.input.disable = true;
+
+                        let user = { 
+                            Nome: "login",
+                            Email: this.input.email, 
+                            Senha: this.input.senha 
+                        };
+
+                        this.$http.post('api/Login', user).then(res => {
+
+                            if (res.status == 200){
+                                this.$toast.success({
+                                    title:'Success',
+                                    message: "Usuário registrado com sucesso!",
+                                });                                
+                            }else{
+                                this.$toast.error({
+                                    title:'Erro',
+                                    message: res.body,
+                                });                                
+                            }
+                            
+                            this.input.disable = false;
+
+                            //this.$router.replace({ name: "Home" });
+
+                        }, err => {
+
+                            this.input.disable = false;
+
+                            if (err.status == 400){
+                                this.$toast.error({
+                                    title:'Validação',
+                                    message: err.body,
+                                });
+                            }else{
+                                this.$toast.error({
+                                    title:'Erro',
+                                    message: err.body,
+                                });
+                            }
+                        });
+                    }
+                });               
             }
-        }
+        },
+        created() {
+            this.sessionService = new SessionService();
+        },
     }
 </script>
 
