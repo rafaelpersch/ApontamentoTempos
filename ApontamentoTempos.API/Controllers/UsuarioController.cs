@@ -75,28 +75,5 @@ namespace ApontamentoTempos.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult Login([FromBody]Usuario usuario, [FromServices]SigningConfigurations signingConfigurations, [FromServices]TokenConfigurations tokenConfigurations)
-        {
-            bool credenciaisValidas = false;
-
-            Usuario usuarioCadatrado = context.Usuarios.Where(x => x.Email == usuario.Email && x.Senha == Cryptography.Encrypt(usuario.Senha)).FirstOrDefault();
-
-            if (usuarioCadatrado != null)
-            {
-                credenciaisValidas = true;
-            }
-
-            if (credenciaisValidas)
-            {
-                return Ok(TokenConfigurations.GenerateToken(usuario.Id.ToString(), signingConfigurations, tokenConfigurations));
-            }
-            else
-            {
-                return BadRequest("Falha de login!");
-            }
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace ApontamentoTempos.API.Security
     {
         public string Audience { get; set; }
         public string Issuer { get; set; }
-        public int Seconds { get; set; }
+        public int Days { get; set; }
 
         public static object GenerateToken(string userID, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
         {
@@ -23,7 +23,7 @@ namespace ApontamentoTempos.API.Security
             );
 
             DateTime dataCriacao = DateTime.Now;
-            DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(tokenConfigurations.Seconds);
+            DateTime dataExpiracao = dataCriacao + TimeSpan.FromDays(tokenConfigurations.Days);
 
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor

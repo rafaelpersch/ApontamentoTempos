@@ -77,7 +77,7 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public async Task<IActionResult> PutRecuperacaoSenha([FromRoute] Guid id, [FromBody] Guid idRecuperacao, [FromBody] string novaSenha)
         {
             try
@@ -110,6 +110,6 @@ namespace ApontamentoTempos.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+        }*/
     }
 }
