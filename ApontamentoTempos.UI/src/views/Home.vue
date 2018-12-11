@@ -73,10 +73,11 @@
                         this.$http.post('api/Login', user).then(res => {
 
                             if (res.status == 200){
-                                this.$toast.success({
-                                    title:'Success',
-                                    message: "Usuário registrado com sucesso!",
-                                });                                
+
+                                this.sessionService.set(res.body.accessToken);
+
+                                this.$router.replace({ name: "Principal" });
+ 
                             }else{
                                 this.$toast.error({
                                     title:'Erro',
@@ -85,8 +86,6 @@
                             }
                             
                             this.input.disable = false;
-
-                            //this.$router.replace({ name: "Home" });
 
                         }, err => {
 
