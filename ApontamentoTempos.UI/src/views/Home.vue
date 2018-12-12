@@ -53,12 +53,6 @@
         },
         methods: {
             login(){
-                //alert(this.sessionService.get());    
-
-                /*
-                    this.$emit("authenticated", true);
-                    this.$router.replace({ name: "secure" });         
-                */
                 this.$validator.validateAll().then(success => {
                     if(success) {
                         
@@ -109,6 +103,11 @@
         },
         created() {
             this.sessionService = new SessionService();
+
+            if (this.sessionService.get() !== null ){
+                this.$router.replace({ name: "Principal" });         
+            }
+
         },
     }
 </script>

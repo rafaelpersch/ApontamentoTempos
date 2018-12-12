@@ -41,6 +41,7 @@
 </template>
 
 <script>
+    import SessionService from '../services/SessionService';
     import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
     
     export default {
@@ -109,7 +110,15 @@
                     }
                 });
             }
-        }
+        },
+        created() {
+            this.sessionService = new SessionService();
+
+            if (this.sessionService.get() !== null ){
+                this.$router.replace({ name: "Principal" });         
+            }
+
+        },
     }
 </script>
 

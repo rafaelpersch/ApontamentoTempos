@@ -11,6 +11,10 @@
                 <input id="email" class="form-control" placeholder="E-mail" required autofocus type="email" name="email" v-model="input.email" v-validate data-vv-rules="required|email">
                 <span class="erro" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="esqueciMinhaSenha()">Recuperar Senha</button>
+                <br>
+                <b-col sm="12" v-if="input.disable">
+                    <clip-loader></clip-loader>       
+                </b-col>
                 <div class="col text-right">
                     <router-link to="/" class="badge">Voltar</router-link>
                 </div>                        
@@ -23,19 +27,75 @@
 
 <script>
 
+    import SessionService from '../services/SessionService';
+    import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
+
     export default {
+        components: {
+            ClipLoader 
+        },
         data() {
             return {
                 input: {
-                    email: ""
+                    email: "",
+                    disable: false
                 }
             }
         },
         methods: {
             esqueciMinhaSenha(){
-                alert("implementar");
+                this.$validator.validateAll().then(success => {
+                    if(success) {
+                        
+                        this.input.disable = true;
+
+                        this.$http.post('api/RecuperacaoSenha', String(this.input.email), {emulateJSON: true}).then(res => {
+
+                            if (res.status == 200){
+                                this.$toast.success({
+                                    title:'Success',
+                                    message: "E-mail enviado !",
+                                }); 
+ 
+                            }else{
+                                this.$toast.error({
+                                    title:'Erro',
+                                    message: res.body,
+                                });                                
+                            }
+                            
+                            this.input.disable = false;
+
+                            this.$router.replace({ name: "Home" });
+
+                        }, err => {
+
+                            this.input.disable = false;
+
+                            if (err.status == 400){
+                                this.$toast.error({
+                                    title:'Validação',
+                                    message: err.body,
+                                });
+                            }else{
+                                this.$toast.error({
+                                    title:'Erro',
+                                    message: err.body,
+                                });
+                            }
+                        });
+                    }
+                });  
             },
-        }
+        },
+        created() {
+            this.sessionService = new SessionService();
+
+            if (this.sessionService.get() !== null ){
+                this.$router.replace({ name: "Principal" });         
+            }
+
+        },
     }
 </script>
 
