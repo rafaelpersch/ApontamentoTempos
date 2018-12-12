@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
 using ApontamentoTempos.API.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace ApontamentoTempos.API.Controllers
 {
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class RecuperacaoSenhaController : Controller
@@ -22,6 +24,7 @@ namespace ApontamentoTempos.API.Controllers
             this.context = new MyDbContext(config["ConnectionString"]);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> PostRecuperacaoSenha([FromBody] string email)
         {
