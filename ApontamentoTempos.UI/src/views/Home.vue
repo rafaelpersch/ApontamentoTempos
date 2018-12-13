@@ -68,7 +68,7 @@
 
                             if (res.status == 200){
 
-                                this.sessionService.set(res.body.accessToken);
+                                this.sessionService.set(res.body);
 
                                 this.$router.replace({ name: "Principal" });
  
