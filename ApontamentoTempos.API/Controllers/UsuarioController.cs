@@ -68,6 +68,8 @@ namespace ApontamentoTempos.API.Controllers
                     return BadRequest("Usuário não encontrado!");
                 }
 
+                usuario.Senha = string.Empty;
+
                 return Ok(usuario);
             }
             catch (Exception ex)

@@ -44,7 +44,8 @@ namespace ApontamentoTempos.API.Security
                 expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                 accessToken = token,
                 refreshToken = "638c5433-4b13-43ee-bd6a-d5ec96e57c0b".Replace("-", String.Empty),
-                message = "OK"
+                uid = userID,
+                message = "OK",
             };
 
             return resultado;
