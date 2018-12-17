@@ -72,20 +72,12 @@
                             Senha: this.input.senha 
                         };
 
-
                         this.$http.post('api/Usuario', user).then(res => {
 
-                            if (res.status == 200){
-                                this.$toast.success({
-                                    title:'Success',
-                                    message: "Usuário registrado com sucesso!",
-                                });                                
-                            }else{
-                                this.$toast.error({
-                                    title:'Erro',
-                                    message: res.body,
-                                });                                
-                            }
+                            this.$toast.success({
+                                title:'Success',
+                                message: "Usuário registrado com sucesso!",
+                            });                                
                             
                             this.input.disable = false;
 
@@ -95,17 +87,10 @@
 
                             this.input.disable = false;
 
-                            if (err.status == 400){
-                                this.$toast.error({
-                                    title:'Validação',
-                                    message: err.body,
-                                });
-                            }else{
-                                this.$toast.error({
-                                    title:'Erro',
-                                    message: err.body,
-                                });
-                            }
+                            this.$toast.error({
+                                title:'Ops!',
+                                message: err.body,
+                            });
                         });
                     }
                 });

@@ -51,18 +51,10 @@
 
                         this.$http.post('api/RecuperacaoSenha', String(this.input.email), {emulateJSON: true}).then(res => {
 
-                            if (res.status == 200){
-                                this.$toast.success({
-                                    title:'Success',
-                                    message: "E-mail enviado !",
-                                }); 
- 
-                            }else{
-                                this.$toast.error({
-                                    title:'Erro',
-                                    message: res.body,
-                                });                                
-                            }
+                            this.$toast.success({
+                                title:'Success',
+                                message: "E-mail enviado !",
+                            });
                             
                             this.input.disable = false;
 
@@ -72,17 +64,10 @@
 
                             this.input.disable = false;
 
-                            if (err.status == 400){
-                                this.$toast.error({
-                                    title:'Validação',
-                                    message: err.body,
-                                });
-                            }else{
-                                this.$toast.error({
-                                    title:'Erro',
-                                    message: err.body,
-                                });
-                            }
+                            this.$toast.error({
+                                title:'Ops!',
+                                message: err.body,
+                            });
                         });
                     }
                 });  

@@ -65,19 +65,10 @@
                         };
 
                         this.$http.post('api/Login', user).then(res => {
+                            
+                            this.sessionService.set(res.body);
 
-                            if (res.status == 200){
-
-                                this.sessionService.set(res.body);
-
-                                this.$router.replace({ name: "Principal" });
- 
-                            }else{
-                                this.$toast.error({
-                                    title:'Erro',
-                                    message: res.body,
-                                });                                
-                            }
+                            this.$router.replace({ name: "Principal" });
                             
                             this.input.disable = false;
 
@@ -85,17 +76,10 @@
 
                             this.input.disable = false;
 
-                            if (err.status == 400){
-                                this.$toast.error({
-                                    title:'Validação',
-                                    message: err.body,
-                                });
-                            }else{
-                                this.$toast.error({
-                                    title:'Erro',
-                                    message: err.body,
-                                });
-                            }
+                            this.$toast.error({
+                                title:'Ops!',
+                                message: err.body,
+                            });
                         });
                     }
                 });               

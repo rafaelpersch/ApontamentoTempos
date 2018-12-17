@@ -138,9 +138,9 @@
                     this.usuario = res.body.nome;                          
                 }else{
                     this.$toast.error({
-                        title:'Erro',
+                        title:'Ops!',
                         message: res.body,
-                    });                                
+                    });                              
                 }
             });            
         },
