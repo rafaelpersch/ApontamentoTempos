@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
 using Microsoft.AspNetCore.Mvc;
-using ApontamentoTempos.API.Filter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +23,6 @@ namespace ApontamentoTempos.API.Controllers
             this.context = new MyDbContext(config["ConnectionString"]);
         }
 
-        [MyActionFilter]
         [HttpGet]
         public IEnumerable<Projeto> GetProjetos()
         {
