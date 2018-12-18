@@ -21,7 +21,7 @@
                 <input id="senha" class="form-control" placeholder="Senha" required type="password" name="senha" v-model="input.senha" v-validate data-vv-rules="required" ref="senha">
                 <span class="erro" v-show="errors.has('senha')">{{ errors.first('senha') }}</span>
                 <div class="col text-left">
-                    <h5>Repeat Password:</h5>
+                    <h5>Repetir Senha</h5>
                 </div>
                 <input id="repetirSenha" class="form-control" placeholder="Repetir Senha" required type="password" name="repetirSenha" v-model="input.repetirSenha" v-validate data-vv-rules="required|confirmed:senha">                        
                 <span class="erro" v-show="errors.has('repetirSenha')">{{ errors.first('repetirSenha') }}</span>
@@ -33,7 +33,7 @@
                 <div class="col text-right">
                     <router-link to="/" class="badge">Voltar</router-link>
                 </div>                        
-                <p class="mt-5 mb-3 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
+                <p class="mt-2 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
             </form>
         </div>
     </div>

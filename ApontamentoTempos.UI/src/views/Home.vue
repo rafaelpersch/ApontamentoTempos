@@ -26,7 +26,7 @@
                 <div class="col text-right">
                     <router-link to="/RegistreSe" class="badge">Cadastre-se!</router-link>
                 </div>                    
-                <p class="mt-5 mb-3 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
+                <p class="mt-2 text-muted">Desenvolvido por Nene (Rafael Persch)</p>
             </form>
         </div>
     </div>
