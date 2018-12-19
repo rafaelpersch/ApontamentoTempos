@@ -17,7 +17,7 @@ export default new Router({
     { path: '/', name: 'Home', component: Home },
     { path: '/RegistreSe', name: 'RegistreSe', component: RegistreSe },
     { path: '/EsqueciMinhaSenha', name: 'EsqueciMinhaSenha', component: EsqueciMinhaSenha },
-    { path: '/Principal', name: 'Principal', component: Principal },
+    { path: "/Principal", name: "Principal", component: Principal, children: [{ path: 'Projeto', component: Projeto }] },
     { path: '/Projeto', name: 'Projeto', component: Projeto },
     { path: '/Sair', name: 'Sair', component: Sair },
   ]

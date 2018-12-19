@@ -7,10 +7,17 @@ import VueResource from 'vue-resource';
 import VeeValidate from 'vee-validate';
 import CxltToastr from 'cxlt-vue2-toastr';
 import msg from './pt_BR';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSave, faSignOutAlt, faClock, faFile } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
+
+library.add(faSave, faSignOutAlt, faClock, faFile);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
