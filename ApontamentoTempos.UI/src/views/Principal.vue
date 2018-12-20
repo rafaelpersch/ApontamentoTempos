@@ -9,8 +9,8 @@
             <b-collapse is-nav id="nav_collapse">
 
                 <b-navbar-nav>
-                    <b-nav-item :to="{ path: '/Principal/Projeto'}"><font-awesome-icon icon="file" /> Projetos</b-nav-item>
-                    <b-nav-item href="#"><font-awesome-icon icon="clock" /> Tempos</b-nav-item>
+                    <b-nav-item :to="{ path: '/Principal/Projetos'}"><font-awesome-icon icon="file" /> Projetos</b-nav-item>
+                    <b-nav-item :to="{ path: '/Principal/Projeto'}"><font-awesome-icon icon="clock" /> Tempos</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
