@@ -29,7 +29,9 @@
 
         <div class="container-fluid">
             <br>
-            <router-view></router-view>
+            <transition name="mytransition">
+                <router-view></router-view>
+            </transition>
         </div>
 
     </div>
@@ -80,5 +82,14 @@
     }
     .corNene{
         background-color: #007bff !important;
+    }
+
+    .mytransition-enter, .mytransition-leave-active {
+
+        opacity: 0;
+    }
+
+    .mytransition-enter-active, .mytransition-leave-active {
+        transition: opacity .4s;
     }
 </style>
