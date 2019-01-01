@@ -14,7 +14,10 @@ namespace ApontamentoTempos.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<object> objs = new List<object>();
+            objs.Add(new { c1 = "value1", c2 = "value2" });
+
+            return new JsonResult(objs);
         }
 
         // GET api/values/5
