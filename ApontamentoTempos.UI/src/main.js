@@ -10,6 +10,7 @@ import msg from './pt_BR';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSave, faSignOutAlt, faClock, faFile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { ServerTable, ClientTable} from 'vue-tables-2';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -22,6 +23,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.use(ClientTable);
+Vue.use(ServerTable);
 
 var toastrConfigs = {
   position: 'top full width',
