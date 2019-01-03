@@ -59,7 +59,6 @@
             }
 
             this.$http.get('api/Usuario/' + this.sessionService.get().uid, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
-
                 if (res.status == 200){
                     this.usuario = res.body.nome;                          
                 }else{
@@ -68,6 +67,8 @@
                         message: res.body,
                     });                              
                 }
+            }).catch(err => {
+                this.$router.replace({ name: "Sair" });
             });            
         },
     }
