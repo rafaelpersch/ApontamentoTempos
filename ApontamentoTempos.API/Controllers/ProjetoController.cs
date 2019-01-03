@@ -24,7 +24,7 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Projeto> GetProjetos()
+        public ActionResult<IEnumerable<Projeto>> Get()
         {
             try
             {
