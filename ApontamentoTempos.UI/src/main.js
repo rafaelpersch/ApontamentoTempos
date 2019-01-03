@@ -8,7 +8,7 @@ import VeeValidate from 'vee-validate';
 import CxltToastr from 'cxlt-vue2-toastr';
 import msg from './pt_BR';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSave, faSignOutAlt, faClock, faFile } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faSignOutAlt, faClock, faFile, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { ServerTable, ClientTable} from 'vue-tables-2';
 
@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 
-library.add(faSave, faSignOutAlt, faClock, faFile);
+library.add(faSave, faSignOutAlt, faClock, faFile, faPlusSquare);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
