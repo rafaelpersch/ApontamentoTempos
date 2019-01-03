@@ -18,7 +18,6 @@
       </div>
     </div>  
      <v-server-table 
-          url="api/values/"
           :columns="columns" 
           :options="options">
       </v-server-table>
@@ -32,40 +31,45 @@ import SessionService from '../services/SessionService';
 export default {
   data () {
     return {
-      columns: ['c1', 'c2'],
+      columns: ['id', 'nome'],
       options: {
         headings: {
           name: 'Country Name',
           code: 'Country Code'
         },
-        sortable: ['c1', 'c2'],
-        filterable: ['c1', 'c2'],
-        getData(){
+        sortable: ['id', 'nome'],
+        filterable: ['id', 'nome'],
+        requestFunction: function (data) {
+
           this.sessionService = new SessionService();
 
-          this.$http.get('api/values/', { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
-            alert(res.body[0].c1);
+          return this.$http.get('api/Projeto/', { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
             return res.body; 
           }, res =>{
-            alert(res.body);
-            return res.body; 
-          }); 
-        },  
+            console.log(res);
+          }).bind(this); 
+
+        },        
         responseAdapter : function(resp) {
           var data = this.getResponseData(resp); 
+          /*var result = [];
+
+          for (var d in data) {
+              result.push({id:data[d].c1, nome:data[d].c2}); 
+          }*/
+
           return { data: data, count: 20 };
-        }     
+        },            
       }
     }
   },
   created() {
     this.sessionService = new SessionService();
-  }
+  }, 
 }
 </script>
 
 <style>
-
 .form-inline label{
   display: initial;
 }
@@ -83,5 +87,4 @@ export default {
 th:nth-child(3) {
   text-align: left;
 }
-
 </style>
