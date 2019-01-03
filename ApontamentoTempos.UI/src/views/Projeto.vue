@@ -14,16 +14,17 @@
     <div class="row">
       <div class="col-md-12">
         <h4 class="mb-3">Cadastro de Projeto</h4>
-        <form class="needs-validation" novalidate="">
+        <form class="needs-validation" v-on:keyup.enter="save()">
           <div class="row">
             <div class="col-md-6">
               <label for="firstName">Nome</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" required="">
+              <input id="nome" class="form-control" placeholder="Nome" required name="nome" v-model="input.nome" v-validate data-vv-rules="required">
+              <span class="erro" v-show="errors.has('nome')">{{ errors.first('nome') }}</span>              
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 text-right">
-              <button class="btn btn-primary mt-2" type="submit"><font-awesome-icon icon="save" /> Gravar</button>
+              <button class="btn btn-primary mt-2" type="button" v-on:click="save()" :disabled="input.disable"><font-awesome-icon icon="save" /> Gravar</button>
             </div>
           </div>
         </form>
@@ -33,14 +34,66 @@
 </template>
 
 <script>
+import SessionService from '../services/SessionService';
+
 export default {
-  data () {
-    return {
-      types: [
-        'text', 'password', 'email', 'number', 'url',
-        'tel', 'date', `time`, 'range', 'color'
-      ]
-    }
-  }
+  data() {
+      return {
+          input: {
+              id: "8bac866f-b8c2-4cf3-8603-3f509c76fc00",
+              nome: "",
+              disable: false
+          },
+      }
+  },
+  methods: {
+      save(){
+          this.$validator.validateAll().then(success => {
+              if(success) {
+                  
+                  this.input.disable = true;
+
+                  let projeto = { 
+                    Id: this.input.id,
+                    Nome: this.input.nome
+                  };
+
+                  console.log(projeto);
+
+                  this.$http.post('api/Projeto', projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
+
+                      this.$toast.success({
+                          title:'Success',
+                          message: "Projeto registrado com sucesso!",
+                      });                                
+                      
+                      this.input.disable = false;
+
+                      //this.$router.replace({ name: "Projetos" });
+
+                  }, err => {
+
+                      this.input.disable = false;
+/*
+                      this.$toast.error({
+                          title:'Ops!',
+                          message: err.body,
+                      });*/
+                  });
+              }
+          });
+      }
+  },
+  created() {
+      this.sessionService = new SessionService();
+  },
 }
 </script>
+
+<style scoped>
+
+    .erro {
+        color: red;
+    } 
+
+</style>

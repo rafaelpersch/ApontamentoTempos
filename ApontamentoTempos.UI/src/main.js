@@ -35,7 +35,8 @@ var toastrConfigs = {
 Vue.use(CxltToastr, toastrConfigs);
 
 Vue.http.options.root = 'https://localhost:5001';
-Vue.http.headers.common['Access-Control-Allow-Origin'] = '*'
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
+Vue.http.headers.common['Content-Type'] = 'application/json';
 
 Vue.use(VeeValidate, {
   locale: 'pt_BR',
