@@ -31,14 +31,11 @@ import SessionService from '../services/SessionService';
 export default {
   data () {
     return {
-      columns: ['id', 'nome'],
+      columns: ['id', 'nome', 'botoes'],
       options: {
         headings: {
-          name: 'Country Name',
-          code: 'Country Code'
+          botoes: 'Botões'
         },
-        sortable: ['id', 'nome'],
-        filterable: ['id', 'nome'],
         requestFunction: function (data) {
 
           this.sessionService = new SessionService();
@@ -52,13 +49,20 @@ export default {
         },        
         responseAdapter : function(resp) {
           var data = this.getResponseData(resp); 
+          var data2 = [];
+          for (var key in data) {
+            data2.push({id:data[key].id, nome:data[key].nome, botoes:<div><button class="btn btn-primary mt-2" type="button" onclick="alert('vsdvds');" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>})
+          }          
+
+//data = [{id:<div><button class="btn btn-primary mt-2" type="button" onclick="alert('vsdvds');" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>, nome:'teste'}];
+
           /*var result = [];
 
           for (var d in data) {
               result.push({id:data[d].c1, nome:data[d].c2}); 
           }*/
 
-          return { data: data, count: 20 };
+          return { data: data2, count: 20 };
         },            
       }
     }
@@ -69,7 +73,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .form-inline label{
   display: initial;
 }

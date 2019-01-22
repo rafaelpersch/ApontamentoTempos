@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-md-12">
         <h4 class="mb-3">Cadastro de Projeto</h4>
-        <form class="needs-validation" v-on:keyup.enter="save()">
+        <form class="needs-validation" v-on:submit.prevent="save()">
           <div class="row">
             <div class="col-md-6">
               <label for="firstName">Nome</label>
@@ -58,8 +58,6 @@ export default {
                     Nome: this.input.nome
                   };
 
-                  console.log(projeto);
-
                   this.$http.post('api/Projeto', projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
 
                       this.$toast.success({
@@ -69,16 +67,18 @@ export default {
                       
                       this.input.disable = false;
 
-                      //this.$router.replace({ name: "Projetos" });
+
+
+                      this.$router.replace({ path: '/Principal/Projetos' });
 
                   }, err => {
 
                       this.input.disable = false;
-/*
+
                       this.$toast.error({
                           title:'Ops!',
                           message: err.body,
-                      });*/
+                      });
                   });
               }
           });
