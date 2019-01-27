@@ -37,6 +37,7 @@
 import SessionService from '../services/SessionService';
 
 export default {
+  props: ['id'],
   data() {
       return {
           input: {
@@ -86,6 +87,10 @@ export default {
   },
   created() {
       this.sessionService = new SessionService();
+
+      if (this.id != undefined){
+        this.input.id = this.id;
+      }
   },
 }
 </script>

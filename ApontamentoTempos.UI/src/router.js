@@ -21,6 +21,7 @@ export default new Router({
     { path: '/EsqueciMinhaSenha', name: 'EsqueciMinhaSenha', component: EsqueciMinhaSenha },
     { path: "/Principal", name: "Principal", component: Principal, 
       children: [{ path: 'Projeto', component: Projeto }, 
+                 { path: 'Projeto/:id', component: Projeto, props: true }, 
                  { path: 'Projetos', component: Projetos },
                  { path: 'Tempo', component: Tempo },
                  { path: 'Tempos', component: Tempos } ] 

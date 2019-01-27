@@ -51,7 +51,7 @@ export default {
           var data = this.getResponseData(resp); 
           var data2 = [];
           for (var key in data) {
-            data2.push({id:data[key].id, nome:data[key].nome, botoes:<div><button class="btn btn-primary mt-2" type="button" onclick="alert('vsdvds');" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>})
+            data2.push({id:data[key].id, nome:data[key].nome, botoes:<div><button class="btn btn-primary mt-2" type="button" onclick="window.location.href='/Principal/Projeto/502a2bc9-3427-4e13-bb74-51c08bb00c89'" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>})
           }          
 
 //data = [{id:<div><button class="btn btn-primary mt-2" type="button" onclick="alert('vsdvds');" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>, nome:'teste'}];
