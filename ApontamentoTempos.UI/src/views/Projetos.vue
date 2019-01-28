@@ -20,6 +20,14 @@
      <v-server-table 
           :columns="columns" 
           :options="options">
+          
+        <router-link class="btn btn-primary mt-2" slot="uriEdit" slot-scope="props" :to="{ path: props.row.uriEdit}">
+          <font-awesome-icon icon="pencil-alt" />
+        </router-link>        
+        <router-link class="btn btn-danger mt-2" slot="uriDelete" slot-scope="props" :to="{ path: props.row.uriDelete}">
+          <font-awesome-icon icon="trash" />
+        </router-link>                
+
       </v-server-table>
   </div>
 </template>
@@ -31,10 +39,11 @@ import SessionService from '../services/SessionService';
 export default {
   data () {
     return {
-      columns: ['id', 'nome', 'botoes'],
+      columns: ['id', 'nome', 'uriEdit', 'uriDelete'],
       options: {
         headings: {
-          botoes: 'Botões'
+          uriEdit: '', 
+          uriDelete: '',
         },
         requestFunction: function (data) {
 
@@ -51,22 +60,16 @@ export default {
           var data = this.getResponseData(resp); 
           var data2 = [];
           for (var key in data) {
-            data2.push({id:data[key].id, nome:data[key].nome, botoes:<div><button class="btn btn-primary mt-2" type="button" onclick="window.location.href='/Principal/Projeto/502a2bc9-3427-4e13-bb74-51c08bb00c89'" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>})
+            data2.push({id:data[key].id, nome:data[key].nome, uriEdit: '/Principal/Projeto/' + data[key].id, uriDelete: '#'});
           }          
-
-//data = [{id:<div><button class="btn btn-primary mt-2" type="button" onclick="alert('vsdvds');" ><font-awesome-icon icon="pencil-alt" /></button> <button class="btn btn-danger mt-2" type="button"><font-awesome-icon icon="trash" /></button></div>, nome:'teste'}];
-
-          /*var result = [];
-
-          for (var d in data) {
-              result.push({id:data[d].c1, nome:data[d].c2}); 
-          }*/
 
           return { data: data2, count: 20 };
         },            
       }
     }
   },
+  methods: {
+  },  
   created() {
     this.sessionService = new SessionService();
   }, 

@@ -41,7 +41,7 @@ export default {
   data() {
       return {
           input: {
-              id: "8bac866f-b8c2-4cf3-8603-3f509c76fc00",
+              id: "00000000-0000-0000-0000-000000000000",
               nome: "",
               disable: false
           },
@@ -59,28 +59,49 @@ export default {
                     Nome: this.input.nome
                   };
 
-                  this.$http.post('api/Projeto', projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
+                  if (projeto.Id == "00000000-0000-0000-0000-000000000000"){
+                    this.$http.post('api/Projeto', projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
 
-                      this.$toast.success({
-                          title:'Success',
-                          message: "Projeto registrado com sucesso!",
-                      });                                
-                      
-                      this.input.disable = false;
+                        this.$toast.success({
+                            title:'Success',
+                            message: "Projeto registrado com sucesso!",
+                        });                                
+                        
+                        this.input.disable = false;
 
+                        this.$router.replace({ path: '/Principal/Projetos' });
 
+                    }, err => {
 
-                      this.$router.replace({ path: '/Principal/Projetos' });
+                        this.input.disable = false;
 
-                  }, err => {
+                        this.$toast.error({
+                            title:'Ops!',
+                            message: err.body,
+                        });
+                    });
+                  }else{
+                    this.$http.put('api/Projeto/' + projeto.Id, projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
 
-                      this.input.disable = false;
+                        this.$toast.success({
+                            title:'Success',
+                            message: "Projeto alterado com sucesso!",
+                        });                                
+                        
+                        this.input.disable = false;
 
-                      this.$toast.error({
-                          title:'Ops!',
-                          message: err.body,
-                      });
-                  });
+                        this.$router.replace({ path: '/Principal/Projetos' });
+
+                    }, err => {
+
+                        this.input.disable = false;
+
+                        this.$toast.error({
+                            title:'Ops!',
+                            message: err.body,
+                        });
+                    });                    
+                  }
               }
           });
       }
