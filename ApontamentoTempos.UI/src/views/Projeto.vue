@@ -111,6 +111,15 @@ export default {
 
       if (this.id != undefined){
         this.input.id = this.id;
+
+        this.$http.get('api/Projeto/' + this.input.id, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
+            if (res.status == 200){
+                
+                this.input.nome = res.body.nome;
+                this.input.disable =  false;
+            }
+        }); 
+
       }
   },
 }
