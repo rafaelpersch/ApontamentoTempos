@@ -17,16 +17,16 @@
         </router-link>
       </div>
     </div>  
-     <v-server-table 
+     <v-server-table ref="table" 
           :columns="columns" 
           :options="options">
           
         <router-link class="btn btn-primary mt-2" slot="uriEdit" slot-scope="props" :to="{ path: props.row.uriEdit}">
           <font-awesome-icon icon="pencil-alt" />
         </router-link>        
-        <router-link class="btn btn-danger mt-2" slot="uriDelete" slot-scope="props" :to="{ path: props.row.uriDelete}">
+        <button class="btn btn-danger mt-2" slot="uriDelete" slot-scope="props" v-on:click="teste">
           <font-awesome-icon icon="trash" />
-        </router-link>                
+        </button>                
 
       </v-server-table>
   </div>
@@ -69,6 +69,9 @@ export default {
     }
   },
   methods: {
+    teste(){
+      this.$refs.table.refresh();
+    }
   },  
   created() {
     this.sessionService = new SessionService();
