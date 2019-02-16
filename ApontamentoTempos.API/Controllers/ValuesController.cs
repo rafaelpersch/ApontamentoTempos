@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApontamentoTempos.API.Tools;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApontamentoTempos.API.Controllers
@@ -12,10 +13,15 @@ namespace ApontamentoTempos.API.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<IEnumerable<string>>> GetAsync()
         {
             List<object> objs = new List<object>();
             objs.Add(new { c1 = "value1", c2 = "value2" });
+
+            var dest = new List<string>();
+            dest.Add("rafael.persch@softbyte.com.br");
+
+            //await EmailHelper.EnvioEmail(dest, "teste", "mimimim");
 
             return new JsonResult(objs);
         }
