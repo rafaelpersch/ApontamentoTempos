@@ -24,7 +24,7 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Projeto>> Get()
+        public ActionResult<IEnumerable<Projeto>> Get(string query, string limit, string page, string orderBy, string ascending, string byColumn)
         {
             try
             {
