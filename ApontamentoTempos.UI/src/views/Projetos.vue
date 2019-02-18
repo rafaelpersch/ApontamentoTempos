@@ -49,7 +49,7 @@ export default {
 
           this.sessionService = new SessionService();
 
-          return this.$http.get('api/Projeto/', { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
+          return this.$http.get('api/Projeto/', { params: data, headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
             return res.body; 
           }, res =>{
             console.log(res);
