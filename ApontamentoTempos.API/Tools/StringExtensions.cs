@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 
-
 namespace ApontamentoTempos.API.Tools
 {
     public static class StringExtensions

@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApontamentoTempos.API.Tools;
-using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
-using Microsoft.AspNetCore.Authorization;
+using ApontamentoTempos.API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ApontamentoTempos.API.Security;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using ApontamentoTempos.API.Tools;
 
 namespace ApontamentoTempos.API.Controllers
 {
@@ -16,33 +16,47 @@ namespace ApontamentoTempos.API.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private readonly MyDbContext context;
+        private IConfiguration config;
 
         public LoginController(IConfiguration config)
         {
-            this.context = new MyDbContext(config["ConnectionString"]);
+            this.config = config;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult PostLogin([FromBody]Usuario usuario, [FromServices]SigningConfigurations signingConfigurations, [FromServices]TokenConfigurations tokenConfigurations)
+        public async Task<IActionResult> PostLogin([FromBody]Login login, [FromServices]SigningConfigurations signingConfigurations, [FromServices]TokenConfigurations tokenConfigurations)
         {
-            bool credenciaisValidas = false;
-
-            Usuario usuarioCadatrado = context.Usuarios.Where(x => x.Email == usuario.Email && x.Senha == Cryptography.Encrypt(usuario.Senha)).FirstOrDefault();
-
-            if (usuarioCadatrado != null)
+            try
             {
-                credenciaisValidas = true;
-            }
+                if (login != null)
+                {
+                    using (var context = new MyDbContext(config["ConnectionString"]))
+                    {
+                        Usuario usuarioCadatrado = await context.Usuarios.Where(x => x.Email == login.Email && x.Senha == Cryptography.Encrypt(login.Email + login.Senha)).FirstOrDefaultAsync();
 
-            if (credenciaisValidas)
-            {
-                return Ok(TokenConfigurations.GenerateToken(usuarioCadatrado.Id.ToString(), signingConfigurations, tokenConfigurations));
-            }
-            else
-            {
+                        if (usuarioCadatrado != null)
+                        {
+                            Token token = TokenConfigurations.GenerateToken(usuarioCadatrado.Id.ToString(), signingConfigurations, tokenConfigurations);
+
+                            await context.RefreshTokens.AddAsync(new RefreshToken()
+                            {
+                                Id = token.RefreshToken,
+                                UsuarioId = usuarioCadatrado.Id,
+                            });
+
+                            await context.SaveChangesAsync();
+
+                            return Ok(token);
+                        }
+                    }
+                }
+
                 return BadRequest("Falha de login!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

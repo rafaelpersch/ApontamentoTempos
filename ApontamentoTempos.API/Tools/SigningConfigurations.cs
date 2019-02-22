@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ApontamentoTempos.API.Security
+namespace ApontamentoTempos.API.Tools
 {
     public class SigningConfigurations
     {

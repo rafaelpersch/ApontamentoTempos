@@ -1,31 +1,33 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
+using ApontamentoTempos.API.Model;
+using Microsoft.IdentityModel.Tokens;
 
-namespace ApontamentoTempos.API.Security
+namespace ApontamentoTempos.API.Tools
 {
     public class TokenConfigurations
     {
         public string Audience { get; set; }
         public string Issuer { get; set; }
-        public int Days { get; set; }
+        public int Minutes { get; set; }
 
-        public static object GenerateToken(string userID, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
+        public static Token GenerateToken(string user, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(userID, "Login"),
+                new GenericIdentity(user, "Login"),
                 new[] {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, userID)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, user)
                 }
             );
 
             DateTime dataCriacao = DateTime.Now;
-            DateTime dataExpiracao = dataCriacao + TimeSpan.FromDays(tokenConfigurations.Days);
+            DateTime dataExpiracao = dataCriacao + TimeSpan.FromMinutes(tokenConfigurations.Minutes);
 
             var handler = new JwtSecurityTokenHandler();
+
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = tokenConfigurations.Issuer,
@@ -33,19 +35,19 @@ namespace ApontamentoTempos.API.Security
                 SigningCredentials = signingConfigurations.SigningCredentials,
                 Subject = identity,
                 NotBefore = dataCriacao,
-                Expires = dataExpiracao
+                Expires = dataExpiracao,
             });
+
             var token = handler.WriteToken(securityToken);
 
-            var resultado = new
+            var resultado = new Token
             {
-                authenticated = true,
-                created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                accessToken = token,
-                refreshToken = "638c5433-4b13-43ee-bd6a-d5ec96e57c0b".Replace("-", String.Empty),
-                uid = userID,
-                message = "OK",
+                Authenticated = true,
+                Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                AccessToken = token,
+                RefreshToken = Guid.NewGuid(),
+                Message = "OK",
             };
 
             return resultado;

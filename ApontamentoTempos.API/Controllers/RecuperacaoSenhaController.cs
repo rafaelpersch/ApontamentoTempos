@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
@@ -12,16 +11,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace ApontamentoTempos.API.Controllers
 {
-    [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class RecuperacaoSenhaController : Controller
     {
-        private readonly MyDbContext context;
+        private IConfiguration config;
 
         public RecuperacaoSenhaController(IConfiguration config)
         {
-            this.context = new MyDbContext(config["ConnectionString"]);
+            this.config = config;
         }
 
         [AllowAnonymous]
@@ -30,26 +28,31 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                Usuario user = context.Usuarios.Where(b => b.Email == email).FirstOrDefault();
-
-                if (user == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    throw new ApplicationException("Email não encontrado!");
+                    Usuario user = context.Usuarios.Where(b => b.Email == email).FirstOrDefault();
+
+                    if (user == null)
+                    {
+                        throw new ApplicationException("Email não encontrado!");
+                    }
+
+                    RecuperacaoSenha reset = new RecuperacaoSenha()
+                    {
+                        Id = Guid.NewGuid(),
+                        Data = DateTime.Now,
+                        Usuario = null,
+                        UsuarioId = user.Id,
+                    };
+
+                    reset.Validar();
+
+                    context.RecuperacaoSenhas.Add(reset);
+
+                    await context.SaveChangesAsync();
+
+                    // TODO: ENVIAR EMAIL
                 }
-
-                RecuperacaoSenha reset = new RecuperacaoSenha()
-                {
-                    Id = Guid.NewGuid(),
-                    Data = DateTime.Now,
-                    Usuario = null,
-                    UsuarioId = user.Id,
-                };
-
-                reset.Validar();
-
-                context.RecuperacoesSenha.Add(reset);
-
-                await context.SaveChangesAsync();
 
                 return Ok();
             }
@@ -64,14 +67,17 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                var solicitacao = await context.RecuperacoesSenha.FindAsync(id);
-
-                if (solicitacao == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return BadRequest("Solicitação não encontrado!");
-                }
+                    var solicitacao = await context.RecuperacaoSenhas.FindAsync(id);
 
-                return Ok(solicitacao);
+                    if (solicitacao == null)
+                    {
+                        return BadRequest("Solicitação não encontrado!");
+                    }
+
+                    return Ok(solicitacao);
+                }
             }
             catch (Exception ex)
             {
@@ -80,32 +86,40 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         
-        /*[HttpPut("{id}")]
-        public async Task<IActionResult> PutRecuperacaoSenha([FromRoute] Guid id, [FromBody] Guid idRecuperacao, [FromBody] string novaSenha)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRecuperacaoSenha([FromRoute] Guid id, [FromBody] RecuperacaoSenha recuperacaoSenha)
         {
             try
             {
-                if (id != idRecuperacao)
+                if (recuperacaoSenha == null)
+                {
+                    return BadRequest("Corpo inválido!");
+                }
+
+                if (id != recuperacaoSenha.Id)
                 {
                     return BadRequest("Ids não conferem!");
                 }
 
-                var reset = await context.RecuperacoesSenha.FindAsync(id);
-
-                if (reset == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return BadRequest("Solicitação não encontrada!");
+                    var reset = await context.RecuperacaoSenhas.FindAsync(id);
+
+                    if (reset == null)
+                    {
+                        return BadRequest("Solicitação não encontrada!");
+                    }
+
+                    context.RecuperacaoSenhas.Remove(reset);
+
+                    var usuario = await context.Usuarios.FindAsync(reset.UsuarioId);
+
+                    usuario.Senha = Cryptography.Encrypt(usuario.Email + recuperacaoSenha.Usuario.Senha);
+
+                    context.Entry(usuario).State = EntityState.Modified;
+
+                    await context.SaveChangesAsync();
                 }
-
-                context.RecuperacoesSenha.Remove(reset);
-
-                var usuario = await context.Usuarios.FindAsync(reset.UsuarioId);
-
-                usuario.Senha = Cryptography.Encrypt(novaSenha);
-
-                context.Entry(usuario).State = EntityState.Modified;
-
-                await context.SaveChangesAsync();
 
                 return Ok("Alteração efetuada com sucesso!");
             }
@@ -113,6 +127,6 @@ namespace ApontamentoTempos.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+        }
     }
 }

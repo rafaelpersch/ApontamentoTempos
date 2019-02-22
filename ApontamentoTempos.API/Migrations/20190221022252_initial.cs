@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ApontamentoTempos.API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,7 @@ namespace ApontamentoTempos.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "apontamentos_tempo",
+                name: "apontamento_tempos",
                 columns: table => new
                 {
                     id = table.Column<Guid>(nullable: false),
@@ -49,15 +49,15 @@ namespace ApontamentoTempos.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_apontamentos_tempo", x => x.id);
+                    table.PrimaryKey("pk_apontamento_tempos", x => x.id);
                     table.ForeignKey(
-                        name: "fk_apontamentos_tempo_projetos_projeto_id",
+                        name: "fk_apontamento_tempos_projetos_projeto_id",
                         column: x => x.projeto_id,
                         principalTable: "projetos",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_apontamentos_tempo_usuarios_usuario_id",
+                        name: "fk_apontamento_tempos_usuarios_usuario_id",
                         column: x => x.usuario_id,
                         principalTable: "usuarios",
                         principalColumn: "id",
@@ -65,7 +65,7 @@ namespace ApontamentoTempos.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "recuperacoes_senha",
+                name: "recuperacao_senhas",
                 columns: table => new
                 {
                     id = table.Column<Guid>(nullable: false),
@@ -74,9 +74,27 @@ namespace ApontamentoTempos.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_recuperacoes_senha", x => x.id);
+                    table.PrimaryKey("pk_recuperacao_senhas", x => x.id);
                     table.ForeignKey(
-                        name: "fk_recuperacoes_senha_usuarios_usuario_id",
+                        name: "fk_recuperacao_senhas_usuarios_usuario_id",
+                        column: x => x.usuario_id,
+                        principalTable: "usuarios",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "refresh_tokens",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(nullable: false),
+                    usuario_id = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_refresh_tokens", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_refresh_tokens_usuarios_usuario_id",
                         column: x => x.usuario_id,
                         principalTable: "usuarios",
                         principalColumn: "id",
@@ -84,28 +102,36 @@ namespace ApontamentoTempos.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_apontamentos_tempo_projeto_id",
-                table: "apontamentos_tempo",
+                name: "ix_apontamento_tempos_projeto_id",
+                table: "apontamento_tempos",
                 column: "projeto_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_apontamentos_tempo_usuario_id",
-                table: "apontamentos_tempo",
+                name: "ix_apontamento_tempos_usuario_id",
+                table: "apontamento_tempos",
                 column: "usuario_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_recuperacoes_senha_usuario_id",
-                table: "recuperacoes_senha",
+                name: "ix_recuperacao_senhas_usuario_id",
+                table: "recuperacao_senhas",
+                column: "usuario_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_refresh_tokens_usuario_id",
+                table: "refresh_tokens",
                 column: "usuario_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "apontamentos_tempo");
+                name: "apontamento_tempos");
 
             migrationBuilder.DropTable(
-                name: "recuperacoes_senha");
+                name: "recuperacao_senhas");
+
+            migrationBuilder.DropTable(
+                name: "refresh_tokens");
 
             migrationBuilder.DropTable(
                 name: "projetos");

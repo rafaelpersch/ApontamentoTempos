@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -46,7 +45,7 @@ namespace ApontamentoTempos.API.Tools
                     await smtpClient.SendMailAsync(message);
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 //gravar em log se necessário
             }

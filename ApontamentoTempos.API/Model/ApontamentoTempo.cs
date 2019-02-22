@@ -31,10 +31,10 @@ namespace ApontamentoTempos.API.Model
         public Guid Id { get; set; }
         [Required]
         public Guid UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
         [Required]
         public Guid ProjetoId { get; set; }
-        public Projeto Projeto { get; set; }
+        public virtual Projeto Projeto { get; set; }
         public DateTime Data { get; set; }
         [Required]
         public string Issue { get; set; }

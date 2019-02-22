@@ -1,13 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
-using Microsoft.AspNetCore.Authorization;
+using ApontamentoTempos.API.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApontamentoTempos.API.Controllers
 {
@@ -16,19 +15,24 @@ namespace ApontamentoTempos.API.Controllers
     [ApiController]
     public class ApontamentoTempoController : Controller
     {
-        private readonly MyDbContext context;
+        private IConfiguration config;
 
         public ApontamentoTempoController(IConfiguration config)
         {
-            this.context = new MyDbContext(config["ConnectionString"]);
+            this.config = config;
         }
 
         [HttpGet]
-        public IEnumerable<ApontamentoTempo> GetApontamentoTempos()
+        public async Task<ActionResult<IEnumerable<ApontamentoTempo>>> GetAll(string query, string limit, string page, string orderBy, string ascending, string byColumn)
         {
+            // TODO: Implementar filtros
+
             try
             {
-                return context.ApontamentosTempo;
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    return await context.ApontamentoTempos.ToListAsync();
+                }
             }
             catch
             {
@@ -41,14 +45,37 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                var apontamento = await context.ApontamentosTempo.FindAsync(id);
-
-                if (apontamento == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return BadRequest("Apontamento de Tempo não encontrado!");
+                    return Ok(await context.ApontamentoTempos.FindAsync(id));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutApontamentoTempo([FromRoute] Guid id, [FromBody] ApontamentoTempo apontamentoTempo)
+        {
+            try
+            {
+                if (id != apontamentoTempo.Id)
+                {
+                    return BadRequest("Ids não conferem!");
                 }
 
-                return Ok(apontamento);
+                apontamentoTempo.Validar();
+
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    context.Entry(apontamentoTempo).State = EntityState.Modified;
+
+                    await context.SaveChangesAsync();
+                }
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -57,15 +84,18 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostApontamentoTempo([FromBody] ApontamentoTempo apontamento)
+        public async Task<IActionResult> PostApontamentoTempo([FromBody] ApontamentoTempo apontamentoTempo)
         {
             try
             {
-                apontamento.Id = Guid.NewGuid();
-                apontamento.Validar();
+                apontamentoTempo.Id = Guid.NewGuid();
+                apontamentoTempo.Validar();
 
-                context.ApontamentosTempo.Add(apontamento);
-                await context.SaveChangesAsync();
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    context.ApontamentoTempos.Add(apontamentoTempo);
+                    await context.SaveChangesAsync();
+                }
 
                 return Ok();
             }
@@ -80,15 +110,18 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                var apontamento = await context.ApontamentosTempo.FindAsync(id);
-
-                if (apontamento == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return BadRequest("Apontamento de Tempo não encontrado!");
-                }
+                    var apontamentoTempo = await context.ApontamentoTempos.FindAsync(id);
 
-                context.ApontamentosTempo.Remove(apontamento);
-                await context.SaveChangesAsync();
+                    if (apontamentoTempo == null)
+                    {
+                        throw new ApplicationException("ApontamentoTempo não encontrado!");
+                    }
+
+                    context.ApontamentoTempos.Remove(apontamentoTempo);
+                    await context.SaveChangesAsync();
+                }
 
                 return Ok();
             }

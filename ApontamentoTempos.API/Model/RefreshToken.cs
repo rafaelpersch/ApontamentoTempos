@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ApontamentoTempos.API.Model
 {
-    public class RecuperacaoSenha
+    public class RefreshToken
     {
         [Key]
         public Guid Id { get; set; }
         [Required]
         public Guid UsuarioId { get; set; }
         public virtual Usuario Usuario { get; set; }
-        public DateTime Data { get; set; }
 
         public void Validar()
         {
@@ -21,19 +20,7 @@ namespace ApontamentoTempos.API.Model
 
             if (this.UsuarioId == Guid.Empty)
             {
-                throw new ApplicationException("Usuário inválido!");
-            }
-            else
-            {
-                if (this.Usuario.Id == Guid.Empty)
-                {
-                    throw new ApplicationException("Usuário inválido!");
-                }
-            }
-
-            if (this.Data <= new DateTime(1753, 01, 01))
-            {
-                throw new ApplicationException("Data inválida!");
+                throw new ApplicationException("Usúario inválido!");
             }
         }
     }

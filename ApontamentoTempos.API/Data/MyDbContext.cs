@@ -10,8 +10,6 @@ namespace ApontamentoTempos.API.Data
 
         public MyDbContext()
         {
-            // essa implementação é apenas para tempo de desenvolvimento para criar a base de teste
-
             this.connectionString = "Host=localhost;Database=tempos;Username=postgres;Password=217799";
         }
 
@@ -22,19 +20,23 @@ namespace ApontamentoTempos.API.Data
 
         public DbSet<Projeto> Projetos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<RecuperacaoSenha> RecuperacoesSenha { get; set; }
-        public DbSet<ApontamentoTempo> ApontamentosTempo { get; set; }
+        public DbSet<RecuperacaoSenha> RecuperacaoSenhas { get; set; }
+        public DbSet<ApontamentoTempo> ApontamentoTempos { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
-            //optionsBuilder.UseMySql(@"Server=localhost;User Id=root;Password=;Database=test");
+            optionsBuilder.UseLazyLoadingProxies();
             optionsBuilder.UseNpgsql(this.connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            /*builder.Entity<RefreshToken>()
+                 .HasOne(a => a.Usuario)
+                 .WithMany(c => c.RefreshTokens);*/
 
             foreach (var entity in builder.Model.GetEntityTypes())
             {

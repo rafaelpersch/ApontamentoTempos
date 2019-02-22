@@ -52,15 +52,15 @@ namespace ApontamentoTempos.API.Migrations
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_apontamentos_tempo");
+                        .HasName("pk_apontamento_tempos");
 
                     b.HasIndex("ProjetoId")
-                        .HasName("ix_apontamentos_tempo_projeto_id");
+                        .HasName("ix_apontamento_tempos_projeto_id");
 
                     b.HasIndex("UsuarioId")
-                        .HasName("ix_apontamentos_tempo_usuario_id");
+                        .HasName("ix_apontamento_tempos_usuario_id");
 
-                    b.ToTable("apontamentos_tempo");
+                    b.ToTable("apontamento_tempos");
                 });
 
             modelBuilder.Entity("ApontamentoTempos.API.Model.Projeto", b =>
@@ -93,12 +93,30 @@ namespace ApontamentoTempos.API.Migrations
                         .HasColumnName("usuario_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_recuperacoes_senha");
+                        .HasName("pk_recuperacao_senhas");
 
                     b.HasIndex("UsuarioId")
-                        .HasName("ix_recuperacoes_senha_usuario_id");
+                        .HasName("ix_recuperacao_senhas_usuario_id");
 
-                    b.ToTable("recuperacoes_senha");
+                    b.ToTable("recuperacao_senhas");
+                });
+
+            modelBuilder.Entity("ApontamentoTempos.API.Model.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnName("usuario_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_refresh_tokens");
+
+                    b.HasIndex("UsuarioId")
+                        .HasName("ix_refresh_tokens_usuario_id");
+
+                    b.ToTable("refresh_tokens");
                 });
 
             modelBuilder.Entity("ApontamentoTempos.API.Model.Usuario", b =>
@@ -132,13 +150,13 @@ namespace ApontamentoTempos.API.Migrations
                     b.HasOne("ApontamentoTempos.API.Model.Projeto", "Projeto")
                         .WithMany()
                         .HasForeignKey("ProjetoId")
-                        .HasConstraintName("fk_apontamentos_tempo_projetos_projeto_id")
+                        .HasConstraintName("fk_apontamento_tempos_projetos_projeto_id")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ApontamentoTempos.API.Model.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .HasConstraintName("fk_apontamentos_tempo_usuarios_usuario_id")
+                        .HasConstraintName("fk_apontamento_tempos_usuarios_usuario_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -147,7 +165,16 @@ namespace ApontamentoTempos.API.Migrations
                     b.HasOne("ApontamentoTempos.API.Model.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .HasConstraintName("fk_recuperacoes_senha_usuarios_usuario_id")
+                        .HasConstraintName("fk_recuperacao_senhas_usuarios_usuario_id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ApontamentoTempos.API.Model.RefreshToken", b =>
+                {
+                    b.HasOne("ApontamentoTempos.API.Model.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .HasConstraintName("fk_refresh_tokens_usuarios_usuario_id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

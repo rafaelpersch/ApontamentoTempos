@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApontamentoTempos.API.Tools;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
+using ApontamentoTempos.API.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ApontamentoTempos.API.Security;
 
 namespace ApontamentoTempos.API.Controllers
 {
@@ -17,11 +17,11 @@ namespace ApontamentoTempos.API.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
-        private readonly MyDbContext context;
+        private IConfiguration config;
 
         public UsuarioController(IConfiguration config)
         {
-            this.context = new MyDbContext(config["ConnectionString"]);
+            this.config = config;
         }
 
         [AllowAnonymous]
@@ -33,44 +33,25 @@ namespace ApontamentoTempos.API.Controllers
                 usuario.Id = Guid.NewGuid();
                 usuario.Validar();
 
-                List<Usuario> users = context.Usuarios.Where(x => x.Email.Trim().ToLower() == usuario.Email.Trim().ToLower()).ToList();
-
-                if (users != null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    if (users.Count > 0)
+                    List<Usuario> users = context.Usuarios.Where(x => x.Email.Trim().ToLower() == usuario.Email.Trim().ToLower()).ToList();
+
+                    if (users != null)
                     {
-                        throw new ApplicationException("Já existe um usuário com esse e-mail!");
+                        if (users.Count > 0)
+                        {
+                            throw new ApplicationException("Já existe um usuário com esse e-mail!");
+                        }
                     }
+
+                    usuario.Senha = Cryptography.Encrypt(usuario.Email + usuario.Senha);
+
+                    context.Usuarios.Add(usuario);
+                    await context.SaveChangesAsync();
                 }
-
-                usuario.Senha = Cryptography.Encrypt(usuario.Senha);
-
-                context.Usuarios.Add(usuario);
-                await context.SaveChangesAsync();
 
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUsuario([FromRoute] Guid id)
-        {
-            try
-            {
-                var usuario = await context.Usuarios.FindAsync(id);
-
-                if (usuario == null)
-                {
-                    return BadRequest("Usuário não encontrado!");
-                }
-
-                usuario.Senha = string.Empty;
-
-                return Ok(usuario);
             }
             catch (Exception ex)
             {

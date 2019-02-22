@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
+using ApontamentoTempos.API.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApontamentoTempos.API.Controllers
 {
@@ -16,19 +16,24 @@ namespace ApontamentoTempos.API.Controllers
     [ApiController]
     public class ProjetoController : Controller
     {
-        private readonly MyDbContext context;
+        private IConfiguration config;
 
         public ProjetoController(IConfiguration config)
         {
-            this.context = new MyDbContext(config["ConnectionString"]);
+            this.config = config;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Projeto>> Get(string query, string limit, string page, string orderBy, string ascending, string byColumn)
+        public async Task<ActionResult<IEnumerable<Projeto>>> GetAll(string query, string limit, string page, string orderBy, string ascending, string byColumn)
         {
+            // TODO: Implementar filtros
+
             try
             {
-                return context.Projetos;
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    return Ok(await context.Projetos.ToListAsync());
+                }
             }
             catch
             {
@@ -41,14 +46,10 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                var projeto = await context.Projetos.FindAsync(id);
-
-                if (projeto == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return BadRequest("Projeto não encontrado!");
+                    return Ok(await context.Projetos.FindAsync(id));
                 }
-
-                return Ok(projeto);
             }
             catch (Exception ex)
             {
@@ -61,18 +62,21 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                projeto.Validar();
-
                 if (id != projeto.Id)
                 {
                     return BadRequest("Ids não conferem!");
                 }
 
-                context.Entry(projeto).State = EntityState.Modified;
+                projeto.Validar();
 
-                await context.SaveChangesAsync();
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    context.Entry(projeto).State = EntityState.Modified;
 
-                return Ok("Alteração efetuada com sucesso!");
+                    await context.SaveChangesAsync();
+                }
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -88,8 +92,11 @@ namespace ApontamentoTempos.API.Controllers
                 projeto.Id = Guid.NewGuid();
                 projeto.Validar();
 
-                context.Projetos.Add(projeto);
-                await context.SaveChangesAsync();
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    context.Projetos.Add(projeto);
+                    await context.SaveChangesAsync();
+                }
 
                 return Ok();
             }
@@ -104,19 +111,23 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                var projeto = await context.Projetos.FindAsync(id);
-                if (projeto == null)
+                using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return BadRequest("Projeto não encontrado!");
-                }
+                    var projeto = await context.Projetos.FindAsync(id);
 
-                if (context.ApontamentosTempo.Where(b => b.ProjetoId == id).FirstOrDefault() != null)
-                {
-                    return BadRequest("Projeto com tempos já apontados!");
-                }
+                    if (projeto == null)
+                    {
+                        throw new ApplicationException("Projeto não encontrado!");
+                    }
 
-                context.Projetos.Remove(projeto);
-                await context.SaveChangesAsync();
+                    if (context.ApontamentoTempos.Where(b => b.ProjetoId == id).FirstOrDefault() != null)
+                    {
+                        throw new ApplicationException("Projeto com tempos já apontados!");
+                    }
+
+                    context.Projetos.Remove(projeto);
+                    await context.SaveChangesAsync();
+                }
 
                 return Ok();
             }
