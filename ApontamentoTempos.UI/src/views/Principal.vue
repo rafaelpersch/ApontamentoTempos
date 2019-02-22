@@ -39,6 +39,7 @@
 
 <script>
     import SessionService from '../services/SessionService';
+    import HttpService from '../services/HttpService.js';
 
     export default {
         data() {
@@ -53,23 +54,19 @@
         },
         created() {
             this.sessionService = new SessionService();
+            this.httpService = new HttpService(this.$http, this.sessionService);
 
             if (this.sessionService.get() === null ){
                 this.$router.replace({ name: "Home" });         
             }
 
-            this.$http.get('api/Usuario/' + this.sessionService.get().uid, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
-                if (res.status == 200){
-                    this.usuario = res.body.nome;                          
+            this.httpService.get('api/Usuario', false).then(resolve => {
+                if (resolve.status == 200){
+                    this.usuario = resolve.retorno.nome;
                 }else{
-                    this.$toast.error({
-                        title:'Ops!',
-                        message: res.body,
-                    });                              
+                    this.$router.replace({ name: "Sair" });
                 }
-            }).catch(err => {
-                this.$router.replace({ name: "Sair" });
-            });            
+            });          
         },
     }
 </script>

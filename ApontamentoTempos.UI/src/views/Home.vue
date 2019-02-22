@@ -36,6 +36,7 @@
 <script>
 
     import SessionService from '../services/SessionService';
+    import HttpService from '../services/HttpService.js';
     import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
 
     export default {
@@ -58,28 +59,23 @@
                         
                         this.input.disable = true;
 
-                        let user = { 
-                            Nome: "login",
+                        this.httpService.post('api/Login', {
                             Email: this.input.email, 
                             Senha: this.input.senha 
-                        };
+                        }, true).then(resolve => {
+                            if (resolve.status == 200){
+                                this.sessionService.set(resolve.retorno);
+                                this.$router.replace({ name: "Principal" });
+                                alert("mimimi");
+                                this.input.disable = false;
+                            }else{
+                                this.input.disable = false;
 
-                        this.$http.post('api/Login', user).then(res => {
-                            
-                            this.sessionService.set(res.body);
-
-                            this.$router.replace({ name: "Principal" });
-                            
-                            this.input.disable = false;
-
-                        }, err => {
-
-                            this.input.disable = false;
-
-                            this.$toast.error({
-                                title:'Ops!',
-                                message: err.body,
-                            });
+                                this.$toast.error({
+                                    title:'Ops!',
+                                    message: resolve.retorno,
+                                });
+                            }
                         });
                     }
                 });               
@@ -87,11 +83,11 @@
         },
         created() {
             this.sessionService = new SessionService();
+            this.httpService = new HttpService(this.$http, this.sessionService);
 
             if (this.sessionService.get() !== null ){
                 this.$router.replace({ name: "Principal" });         
             }
-
         },
     }
 </script>
