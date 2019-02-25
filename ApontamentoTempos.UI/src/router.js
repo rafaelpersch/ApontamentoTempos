@@ -4,6 +4,7 @@ import Router from 'vue-router';
 const Home = () => import('./views/Home.vue');
 const RegistreSe = () => import('./views/RegistreSe.vue');
 const EsqueciMinhaSenha = () => import('./views/EsqueciMinhaSenha.vue');
+const RecuperacaoSenha = () => import('./views/RecuperacaoSenha.vue');
 const Principal = () => import('./views/Principal.vue');
 const Projeto = () => import('./views/Projeto.vue');
 const Projetos = () => import('./views/Projetos.vue');
@@ -18,6 +19,7 @@ export default new Router({
     { path: '/', name: 'Home', component: Home },
     { path: '/RegistreSe', name: 'RegistreSe', component: RegistreSe },
     { path: '/EsqueciMinhaSenha', name: 'EsqueciMinhaSenha', component: EsqueciMinhaSenha },
+    { path: '/RecuperacaoSenha/:id', name: 'RecuperacaoSenha', component: RecuperacaoSenha, props: true  },
     { path: "/Principal", name: "Principal", component: Principal, 
       children: [{ path: 'Projeto', component: Projeto }, 
                  { path: 'Projeto/:id', component: Projeto, props: true }, 
