@@ -34,12 +34,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }            
             }, err => {
-                console.log("Erro POST: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
-            })
-            .catch((err) => {
-                console.log("Erro POST catch: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
+                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
             });
         });
     }
@@ -74,12 +69,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }
             }, err => {
-                console.log("Erro GET: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
-            })
-            .catch((err) => {
-                console.log("Erro GET catch: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
+                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
             });             
         });
     }
@@ -113,12 +103,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }
             }, err => {
-                console.log("Erro PUT: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
-            })
-            .catch((err) => {
-                console.log("Erro PUT catch: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
+                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
             });            
         });
     }
@@ -153,12 +138,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }
             }, err => {
-                console.log("Erro DELETE: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
-            })
-            .catch((err) => {
-                console.log("Erro DELETE catch: " + err);
-                resolve({ sucesso: false, retorno: "Erro", status: 0 });
+                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
             });             
         });
     }
