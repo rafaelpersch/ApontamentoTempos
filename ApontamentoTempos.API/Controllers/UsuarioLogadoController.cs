@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
-                return Ok(User.Identity.Name);
+                return Ok(User.Claims.Where(x => x.Type == "name_user").FirstOrDefault().Value);
             }
             catch (Exception ex)
             {
