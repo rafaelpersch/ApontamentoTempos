@@ -23,13 +23,6 @@ namespace ApontamentoTempos.API.Model
             {
                 throw new ApplicationException("Usuário inválido!");
             }
-            else
-            {
-                if (this.Usuario.Id == Guid.Empty)
-                {
-                    throw new ApplicationException("Usuário inválido!");
-                }
-            }
 
             if (this.Data <= new DateTime(1753, 01, 01))
             {

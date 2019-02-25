@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -49,6 +51,18 @@ namespace ApontamentoTempos.API.Tools
             {
                 //gravar em log se necessário
             }
+        }
+
+        public static Email GetEmail(IConfiguration config)
+        {
+            return new Email()
+            {
+                EnderecoEmail = config["EnderecoEmail"],
+                Senha = config["SenhaEmail"],
+                PortaSmtp = Convert.ToInt32(config["PortaSmtpEmail"]),
+                ServidorSmtp = config["ServidorSmtpEmail"],
+                UtilizarSsl = config["UtilizarSslEmail"] == "true"
+            };
         }
     }
 

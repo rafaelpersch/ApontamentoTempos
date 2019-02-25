@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
 using ApontamentoTempos.API.Model;
@@ -17,30 +18,21 @@ namespace ApontamentoTempos.API.Controllers
     public class RecuperacaoSenhaController : Controller
     {
         private IConfiguration config;
-        private Email remetente;
 
         public RecuperacaoSenhaController(IConfiguration config)
         {
             this.config = config;
-            this.remetente = new Email()
-            {
-                EnderecoEmail = config["EnderecoEmail"],
-                Senha = config["Senha"],
-                PortaSmtp = Convert.ToInt32(config["PortaSmtp"]),
-                ServidorSmtp = config["ServidorSmtp"],
-                UtilizarSsl = config["UtilizarSsl"] == "true"
-            };
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> PostRecuperacaoSenha([FromBody] string email)
+        public async Task<IActionResult> PostRecuperacaoSenha([FromBody] RecuperacaoSenhaEmail email)
         {
             try
             {
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    Usuario user = context.Usuarios.Where(b => b.Email == email).FirstOrDefault();
+                    Usuario user = context.Usuarios.Where(b => b.Email == email.Email).FirstOrDefault();
 
                     if (user == null)
                     {
@@ -61,12 +53,34 @@ namespace ApontamentoTempos.API.Controllers
 
                     await context.SaveChangesAsync();
 
-                    // TODO: ENVIAR EMAIL
+                    StringBuilder url = new StringBuilder();
+                    url.Append(config["UrlWebSite"]);
+                    url.Append("/RecuperacaoSenha?id=");
+                    url.Append(reset.Id.ToString());
+
+                    StringBuilder mensagem = new StringBuilder();
+                    mensagem.AppendLine("[Apontamento de Tempos]");
+                    mensagem.AppendLine();
+                    mensagem.Append("Olá ");
+                    mensagem.Append(user.Nome);
+                    mensagem.Append(", ");
+                    mensagem.AppendLine();
+                    mensagem.AppendLine();
+                    mensagem.AppendLine("Ops, você esqueceu sua senha. :(");
+                    mensagem.AppendLine("Não se preocupe, a gente pode te ajudar. Basta acessar o link abaixo e redefinir uma nova senha. ;)");
+                    mensagem.AppendLine();
+                    mensagem.Append("<span>");
+                    mensagem.Append("  <a href='");
+                    mensagem.Append(url.ToString());
+                    mensagem.Append("' target='_blank'>Clique aqui!</a>");
+                    mensagem.Append("</span>");
+                    mensagem.AppendLine();
+                    mensagem.AppendLine();
 
                     List<string> destinatarios = new List<string>();
-                    destinatarios.Add(email);
+                    destinatarios.Add(email.Email);
 
-                    await EmailHelper.EnvioEmail(remetente, destinatarios, "Recuperação de Senha", "");
+                    await EmailHelper.EnvioEmail(EmailHelper.GetEmail(config), destinatarios, "Recuperação de Senha [Apontamento de Tempos]", mensagem.ToString());
                 }
 
                 return Ok();
@@ -143,5 +157,10 @@ namespace ApontamentoTempos.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+    }
+
+    public class RecuperacaoSenhaEmail
+    {
+        public string Email { get; set; }
     }
 }
