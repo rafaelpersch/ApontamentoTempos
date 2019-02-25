@@ -18,7 +18,7 @@ namespace ApontamentoTempos.API.Tools
             ClaimsIdentity identity = new ClaimsIdentity(
                 new GenericIdentity("user"),
                 new[] {
-                        new Claim("id_user", usuario.Id.ToString("N")),
+                        new Claim("id_user", usuario.Id.ToString()),
                         new Claim("name_user", usuario.Nome)
                 }
             );
