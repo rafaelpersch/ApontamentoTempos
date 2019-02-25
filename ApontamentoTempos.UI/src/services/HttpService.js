@@ -43,8 +43,6 @@ export default class HttpService {
 
         return new Promise((resolve)=> {
 
-            console.log(this.sessionService.get());
-
             let myHeaders = {};
 
             if (!anonymous){
