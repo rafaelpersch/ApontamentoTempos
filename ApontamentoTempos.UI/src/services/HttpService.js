@@ -35,6 +35,9 @@ export default class HttpService {
                 }            
             }, err => {
                 reject({ sucesso: false, retorno: err.body, status: err.status });
+            })
+            .catch((err) => {
+                reject({ sucesso: false, retorno: "catch" + err, status: 500 });
             });
         });
     }
@@ -70,6 +73,9 @@ export default class HttpService {
                 }
             }, err => {
                 reject({ sucesso: false, retorno: err.body, status: err.status });
+            })
+            .catch((err) => {
+                reject({ sucesso: false, retorno: "catch" + err, status: 500 });
             });             
         });
     }
@@ -104,6 +110,9 @@ export default class HttpService {
                 }
             }, err => {
                 reject({ sucesso: false, retorno: err.body, status: err.status });
+            })
+            .catch((err) => {
+                reject({ sucesso: false, retorno: "catch" + err, status: 500 });
             });            
         });
     }
@@ -139,6 +148,9 @@ export default class HttpService {
                 }
             }, err => {
                 reject({ sucesso: false, retorno: err.body, status: err.status });
+            })
+            .catch((err) => {
+                reject({ sucesso: false, retorno: "catch" + err, status: 500 });
             });             
         });
     }

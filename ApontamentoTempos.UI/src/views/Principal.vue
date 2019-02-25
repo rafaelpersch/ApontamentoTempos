@@ -49,7 +49,8 @@
         },
          methods: {
             Sair() {
-                this.$router.replace({ name: "Sair" });
+                this.sessionService.set(null);
+                this.$router.replace({ name: "Home" });
             }
         },
         created() {

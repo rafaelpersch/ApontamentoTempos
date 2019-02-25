@@ -66,7 +66,6 @@
                             if (resolve.status == 200){
                                 this.sessionService.set(resolve.retorno);
                                 this.$router.replace({ name: "Principal" });
-                                alert("mimimi");
                                 this.input.disable = false;
                             }else{
                                 this.input.disable = false;

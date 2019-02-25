@@ -9,7 +9,6 @@ const Projeto = () => import('./views/Projeto.vue');
 const Projetos = () => import('./views/Projetos.vue');
 const Tempo = () => import('./views/Tempo.vue');
 const Tempos = () => import('./views/Tempos.vue');
-const Sair = () => import('./views/Sair.vue');
 
 Vue.use(Router)
 
@@ -26,6 +25,5 @@ export default new Router({
                  { path: 'Tempo', component: Tempo },
                  { path: 'Tempos', component: Tempos } ] 
     },
-    { path: '/Sair', name: 'Sair', component: Sair },
   ]
 })
