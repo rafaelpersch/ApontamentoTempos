@@ -65,7 +65,7 @@
                 if (resolve.status == 200){
                     this.usuario = resolve.retorno.nome;
                 }else{
-                    this.$router.replace({ name: "Sair" });
+                    this.Sair();
                 }
             });          
         },

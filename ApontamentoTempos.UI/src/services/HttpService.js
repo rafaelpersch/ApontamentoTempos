@@ -34,7 +34,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }            
             }, err => {
-                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
+                resolve({ sucesso: false, retorno: err.body, status: err.status });
             });
         });
     }
@@ -42,6 +42,9 @@ export default class HttpService {
     get(url, anonymous){
 
         return new Promise((resolve)=> {
+
+            console.log(this.sessionService.get());
+
             let myHeaders = {};
 
             if (!anonymous){
@@ -69,7 +72,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }
             }, err => {
-                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
+                resolve({ sucesso: false, retorno: err.body, status: err.status });
             });             
         });
     }
@@ -103,7 +106,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }
             }, err => {
-                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
+                resolve({ sucesso: false, retorno: err.body, status: err.status });
             });            
         });
     }
@@ -138,7 +141,7 @@ export default class HttpService {
                     resolve({ sucesso: false, retorno: res.body, status: res.status });
                 }
             }, err => {
-                resolve({ sucesso: false, retorno: "Erro" + err.body, status: err.status });
+                resolve({ sucesso: false, retorno: err.body, status: err.status });
             });             
         });
     }
