@@ -61,9 +61,9 @@
                 this.$router.replace({ name: "Home" });         
             }
 
-            this.httpService.get('api/Usuario', false).then(resolve => {
+            this.httpService.get('api/UsuarioLogado', false).then(resolve => {
                 if (resolve.status == 200){
-                    this.usuario = resolve.retorno.nome;
+                    this.usuario = resolve.retorno;
                 }else{
                     this.Sair();
                 }
