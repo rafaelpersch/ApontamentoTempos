@@ -58,5 +58,21 @@ namespace ApontamentoTempos.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUsuario([FromRoute] Guid id)
+        {
+            try
+            {
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    return Ok(await context.Usuarios.FindAsync(id));
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
