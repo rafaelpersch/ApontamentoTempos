@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApontamentoTempos.API.Data;
@@ -16,10 +17,19 @@ namespace ApontamentoTempos.API.Controllers
     public class RecuperacaoSenhaController : Controller
     {
         private IConfiguration config;
+        private Email remetente;
 
         public RecuperacaoSenhaController(IConfiguration config)
         {
             this.config = config;
+            this.remetente = new Email()
+            {
+                EnderecoEmail = config["EnderecoEmail"],
+                Senha = config["Senha"],
+                PortaSmtp = Convert.ToInt32(config["PortaSmtp"]),
+                ServidorSmtp = config["ServidorSmtp"],
+                UtilizarSsl = config["UtilizarSsl"] == "true"
+            };
         }
 
         [AllowAnonymous]
@@ -52,6 +62,11 @@ namespace ApontamentoTempos.API.Controllers
                     await context.SaveChangesAsync();
 
                     // TODO: ENVIAR EMAIL
+
+                    List<string> destinatarios = new List<string>();
+                    destinatarios.Add(email);
+
+                    await EmailHelper.EnvioEmail(remetente, destinatarios, "Recuperação de Senha", "");
                 }
 
                 return Ok();

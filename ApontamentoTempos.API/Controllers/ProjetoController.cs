@@ -24,7 +24,7 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Projeto>>> GetAll(string query, string limit, string page, string orderBy, string ascending, string byColumn)
+        public async Task<ActionResult<IEnumerable<Projeto>>> GetAll(string query, int limit, int page, string orderBy, string ascending, string byColumn)
         {
             // TODO: Implementar filtros
 
@@ -32,7 +32,15 @@ namespace ApontamentoTempos.API.Controllers
             {
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return Ok(await context.Projetos.ToListAsync());
+                    /*var result = from s in context.Projetos
+                                   where EF.Functions.Like(s.Nome, "%" + query + "%")
+                                select s;
+
+                    return Ok(await result.ToListAsync());*/
+
+                    return Ok(await context.Projetos.Where(x => x.Nome.Contains(query)).OrderBy(x => x.Nome).Skip(page).Take(limit).ToListAsync());
+
+                    // return Ok(await context.Projetos.ToListAsync());
                 }
             }
             catch
