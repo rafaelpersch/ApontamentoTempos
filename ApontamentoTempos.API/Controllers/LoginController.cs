@@ -37,7 +37,7 @@ namespace ApontamentoTempos.API.Controllers
 
                         if (usuarioCadatrado != null)
                         {
-                            Token token = TokenConfigurations.GenerateToken(usuarioCadatrado.Id.ToString(), signingConfigurations, tokenConfigurations);
+                            Token token = TokenConfigurations.GenerateToken(usuarioCadatrado, signingConfigurations, tokenConfigurations);
 
                             await context.RefreshTokens.AddAsync(new RefreshToken()
                             {

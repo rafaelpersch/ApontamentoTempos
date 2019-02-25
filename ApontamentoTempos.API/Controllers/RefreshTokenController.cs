@@ -33,7 +33,7 @@ namespace ApontamentoTempos.API.Controllers
 
                     if (refreshTokenBase != null)
                     {
-                        Token token = TokenConfigurations.GenerateToken(refreshTokenBase.Usuario.Id.ToString(), signingConfigurations, tokenConfigurations);
+                        Token token = TokenConfigurations.GenerateToken(refreshTokenBase.Usuario, signingConfigurations, tokenConfigurations);
 
                         await context.RefreshTokens.AddAsync(new RefreshToken()
                         {

@@ -74,5 +74,21 @@ namespace ApontamentoTempos.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                using (var context = new MyDbContext(config["ConnectionString"]))
+                {
+                    return Ok(await context.Usuarios.ToListAsync());
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

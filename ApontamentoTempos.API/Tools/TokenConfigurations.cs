@@ -13,13 +13,13 @@ namespace ApontamentoTempos.API.Tools
         public string Issuer { get; set; }
         public int Minutes { get; set; }
 
-        public static Token GenerateToken(string user, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
+        public static Token GenerateToken(Usuario usuario, SigningConfigurations signingConfigurations, TokenConfigurations tokenConfigurations)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(user, "Login"),
+                new GenericIdentity("user"),
                 new[] {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user)
+                        new Claim(JwtRegisteredClaimNames.Jti, usuario.Id.ToString("N")),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, usuario.Nome)
                 }
             );
 
