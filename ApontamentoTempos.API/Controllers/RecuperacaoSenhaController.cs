@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,7 +117,7 @@ namespace ApontamentoTempos.API.Controllers
 
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRecuperacaoSenha([FromRoute] Guid id, [FromBody] RecuperacaoSenha recuperacaoSenha)
+        public async Task<IActionResult> PutRecuperacaoSenha([FromRoute] Guid id, [FromBody] RecuperacaoSenhaNovaSenha recuperacaoSenha)
         {
             try
             {
@@ -143,7 +144,7 @@ namespace ApontamentoTempos.API.Controllers
 
                     var usuario = await context.Usuarios.FindAsync(reset.UsuarioId);
 
-                    usuario.Senha = Cryptography.Encrypt(usuario.Email + recuperacaoSenha.Usuario.Senha);
+                    usuario.Senha = Cryptography.Encrypt(usuario.Email + recuperacaoSenha.Senha);
 
                     context.Entry(usuario).State = EntityState.Modified;
 
@@ -162,5 +163,13 @@ namespace ApontamentoTempos.API.Controllers
     public class RecuperacaoSenhaEmail
     {
         public string Email { get; set; }
+    }
+
+    public class RecuperacaoSenhaNovaSenha
+    {
+        [Required]
+        public Guid Id { get; set; }
+        [Required]
+        public string Senha { get; set; }
     }
 }
