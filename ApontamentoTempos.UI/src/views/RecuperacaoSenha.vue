@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-center login-back">
-            <form class="form-signin">
+            <form class="form-signin" v-on:keyup.enter="recuperarSenha()">
                 <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
                 <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
                 <br>
@@ -16,7 +16,7 @@
                 </div>
                 <input id="repetirSenha" class="form-control" placeholder="Repetir Senha" required type="password" name="repetirSenha" v-model="input.repetirSenha" v-validate data-vv-rules="required|confirmed:senha">                        
                 <span class="erro" v-show="errors.has('repetirSenha')">{{ errors.first('repetirSenha') }}</span>
-                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="recuperarSenha()">Recuperar Senha</button>
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="recuperarSenha()" :disabled="input.disable">Recuperar Senha</button>
                 <br>
                 <b-col sm="12" v-if="input.disable">
                     <clip-loader></clip-loader>       

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-center login-back">
-            <form class="form-signin">
+            <form class="form-signin" v-on:keyup.enter="esqueciMinhaSenha()">
                 <img class="mb-4" src="..\assets\stopwatch.png" alt="" width="75" height="75">
                 <h1 class="h3 mb-3 font-weight-normal">Apontamento de Tempos</h1>
                 <br>
@@ -10,7 +10,7 @@
                 </div>            
                 <input id="email" class="form-control" placeholder="E-mail" required autofocus type="email" name="email" v-model="input.email" v-validate data-vv-rules="required|email">
                 <span class="erro" v-show="errors.has('email')">{{ errors.first('email') }}</span>
-                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="esqueciMinhaSenha()">Recuperar Senha</button>
+                <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="esqueciMinhaSenha()" :disabled="input.disable">Recuperar Senha</button>
                 <br>
                 <b-col sm="12" v-if="input.disable">
                     <clip-loader></clip-loader>       
