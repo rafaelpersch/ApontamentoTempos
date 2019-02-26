@@ -11,6 +11,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSave, faSignOutAlt, faClock, faFile, faPlusSquare, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { ServerTable, ClientTable} from 'vue-tables-2';
+import { host_api } from '../package.json';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -33,6 +34,8 @@ var toastrConfigs = {
 };
 
 Vue.use(CxltToastr, toastrConfigs);
+
+console.log(host_api);
 
 Vue.http.options.root = 'https://localhost:5001';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
