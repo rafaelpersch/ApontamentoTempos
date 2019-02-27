@@ -16,8 +16,14 @@ export default class HttpService {
 
             this.resource.post(url, obj, { headers: myHeaders }).then(res => {
 
-                if (res.status == 401) {
-                    this.resource.post('/api/RefreshToken', { Id:this.sessionService.get().RefreshToken }).then(res => {
+                if (res.status == 200){
+                    resolve({ sucesso: true, retorno: res.body, status: res.status });
+                }else{
+                    resolve({ sucesso: false, retorno: res.body, status: res.status });
+                }            
+            }, err => {
+                if (err.status == 401) {
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
                         if (res.status == 200){
                             this.sessionService.set(res.body);
                             resolve(this.post(url, obj, anonymous));
@@ -27,14 +33,9 @@ export default class HttpService {
                     }, err => {
                         resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
                     });
-                }
-                else if (res.status == 200){
-                    resolve({ sucesso: true, retorno: res.body, status: res.status });
                 }else{
-                    resolve({ sucesso: false, retorno: res.body, status: res.status });
-                }            
-            }, err => {
-                resolve({ sucesso: false, retorno: err.body, status: err.status });
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });
         });
     }
@@ -50,9 +51,14 @@ export default class HttpService {
             }
     
             this.resource.get(url, { headers: myHeaders }).then(res => {
-                if (res.status == 401) {
-
-                    this.resource.post('/api/RefreshToken', { Id:this.sessionService.get().RefreshToken }).then(res => {
+                if (res.status == 200){
+                    resolve({ sucesso: true, retorno: res.body, status: res.status });
+                }else{
+                    resolve({ sucesso: false, retorno: res.body, status: res.status });
+                }
+            }, err => {
+                if (err.status == 401) {
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
                         if (res.status == 200){
                             this.sessionService.set(res.body);
                             resolve(this.get(url, anonymous));
@@ -62,15 +68,9 @@ export default class HttpService {
                     }, err => {
                         resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
                     });
-
-                }
-                else if (res.status == 200){
-                    resolve({ sucesso: true, retorno: res.body, status: res.status });
                 }else{
-                    resolve({ sucesso: false, retorno: res.body, status: res.status });
-                }
-            }, err => {
-                resolve({ sucesso: false, retorno: err.body, status: err.status });
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });             
         });
     }
@@ -85,9 +85,14 @@ export default class HttpService {
             }
 
             this.resource.put(url + "/" + id, obj, { headers: myHeaders }).then(res => {
-                if (res.status == 401) {
-
-                    this.resource.post('/api/RefreshToken', { Id:this.sessionService.get().RefreshToken }).then(res => {
+                if (res.status == 200){
+                    resolve({ sucesso: true, retorno: res.body, status: res.status });
+                }else{
+                    resolve({ sucesso: false, retorno: res.body, status: res.status });
+                }
+            }, err => {
+                if (err.status == 401) {
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
                         if (res.status == 200){
                             this.sessionService.set(res.body);
                             resolve(this.put(url, id, obj, anonymous));
@@ -97,14 +102,9 @@ export default class HttpService {
                     }, err => {
                         resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
                     });
-                }
-                else if (res.status == 200){
-                    resolve({ sucesso: true, retorno: res.body, status: res.status });
                 }else{
-                    resolve({ sucesso: false, retorno: res.body, status: res.status });
-                }
-            }, err => {
-                resolve({ sucesso: false, retorno: err.body, status: err.status });
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });            
         });
     }
@@ -119,9 +119,14 @@ export default class HttpService {
             }
     
             this.resource.delete(url + "/" + id, { headers: myHeaders}).then(res => {
-                if (res.status == 401) {
-                    
-                    this.resource.post('/api/RefreshToken', { Id:this.sessionService.get().RefreshToken }).then(res => {
+                if (res.status == 200){
+                    resolve({ sucesso: true, retorno: res.body, status: res.status });
+                }else{
+                    resolve({ sucesso: false, retorno: res.body, status: res.status });
+                }
+            }, err => {
+                if (err.status == 401) {
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
                         if (res.status == 200){
                             this.sessionService.set(res.body);
                             resolve(this.delte(url, id, anonymous));
@@ -131,15 +136,9 @@ export default class HttpService {
                     }, err => {
                         resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
                     });
-
-                }
-                else if (res.status == 200){
-                    resolve({ sucesso: true, retorno: res.body, status: res.status });
                 }else{
-                    resolve({ sucesso: false, retorno: res.body, status: res.status });
-                }
-            }, err => {
-                resolve({ sucesso: false, retorno: err.body, status: err.status });
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });             
         });
     }
