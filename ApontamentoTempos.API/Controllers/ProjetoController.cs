@@ -38,9 +38,9 @@ namespace ApontamentoTempos.API.Controllers
 
                     return Ok(await result.ToListAsync());*/
 
-                    return Ok(await context.Projetos.Where(x => x.Nome.Contains(query)).OrderBy(x => x.Nome).Skip(page).Take(limit).ToListAsync());
+                    //return Ok(await context.Projetos.Where(x => x.Nome.Contains(query)).OrderBy(x => x.Nome).Skip(page).Take(limit).ToListAsync());
 
-                    // return Ok(await context.Projetos.ToListAsync());
+                    return Ok(await context.Projetos.ToListAsync());
                 }
             }
             catch
