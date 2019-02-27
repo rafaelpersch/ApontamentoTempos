@@ -62,6 +62,7 @@
             }
 
             this.httpService.get('api/UsuarioLogado', false).then(resolve => {
+
                 if (resolve.status == 200){
                     this.usuario = resolve.retorno;
                 }else{
