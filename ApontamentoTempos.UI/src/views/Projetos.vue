@@ -56,7 +56,7 @@ export default {
               if (resolve.status == 200){
                   return resolve.retorno; 
               }else{
-                  console.log(res);
+                  console.log(resolve);
               }
           });
         },        
