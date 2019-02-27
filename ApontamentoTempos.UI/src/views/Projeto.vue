@@ -35,6 +35,7 @@
 
 <script>
 import SessionService from '../services/SessionService';
+import HttpService from '../services/HttpService.js';
 
 export default {
   props: ['id'],
@@ -60,8 +61,9 @@ export default {
                   };
 
                   if (projeto.Id == "00000000-0000-0000-0000-000000000000"){
-                    this.$http.post('api/Projeto', projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
 
+                    this.httpService.post('api/Projeto/', projeto, false).then(resolve => {
+                      if (resolve.status == 200){
                         this.$toast.success({
                             title:'Success',
                             message: "Projeto registrado com sucesso!",
@@ -70,19 +72,20 @@ export default {
                         this.input.disable = false;
 
                         this.$router.replace({ path: '/Principal/Projetos' });
-
-                    }, err => {
-
+                      }else{
                         this.input.disable = false;
 
                         this.$toast.error({
                             title:'Ops!',
-                            message: err.body,
+                            message: resolve.retorno,
                         });
+                      }
                     });
-                  }else{
-                    this.$http.put('api/Projeto/' + projeto.Id, projeto, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
 
+                  }else{
+
+                    this.httpService.put('api/Projeto', this.input.id, projeto, false).then(resolve => {
+                      if (resolve.status == 200){
                         this.$toast.success({
                             title:'Success',
                             message: "Projeto alterado com sucesso!",
@@ -91,16 +94,15 @@ export default {
                         this.input.disable = false;
 
                         this.$router.replace({ path: '/Principal/Projetos' });
-
-                    }, err => {
-
+                      }else{
                         this.input.disable = false;
 
                         this.$toast.error({
                             title:'Ops!',
-                            message: err.body,
+                            message: resolve.retorno,
                         });
-                    });                    
+                      }
+                    });                  
                   }
               }
           });
@@ -108,18 +110,26 @@ export default {
   },
   created() {
       this.sessionService = new SessionService();
+      this.httpService = new HttpService(this.$http, this.sessionService);
+
+      if (this.sessionService.get() === null ){
+          this.$router.replace({ name: "Home" });         
+      }
 
       if (this.id != undefined){
         this.input.id = this.id;
 
-        this.$http.get('api/Projeto/' + this.input.id, { headers: { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken }}).then(res => {
-            if (res.status == 200){
-                
-                this.input.nome = res.body.nome;
+        this.httpService.get('api/Projeto/' + this.input.id, false).then(resolve => {
+          if (resolve.status == 200){
+                this.input.nome = resolve.retorno.nome;
                 this.input.disable =  false;
-            }
-        }); 
-
+          }else{
+            this.$toast.error({
+                title:'Ops!',
+                message: resolve.retorno,
+            });
+          }
+        });          
       }
   },
 }
