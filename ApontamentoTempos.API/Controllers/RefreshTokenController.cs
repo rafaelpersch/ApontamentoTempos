@@ -23,13 +23,13 @@ namespace ApontamentoTempos.API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> PostRefreshToken([FromBody]RefreshToken refreshToken, [FromServices]SigningConfigurations signingConfigurations, [FromServices]TokenConfigurations tokenConfigurations)
+        public async Task<IActionResult> PostRefreshToken([FromBody]RefreshTokenLocal refreshToken, [FromServices]SigningConfigurations signingConfigurations, [FromServices]TokenConfigurations tokenConfigurations)
         {
             try
             {
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    RefreshToken refreshTokenBase = await context.RefreshTokens.FindAsync(refreshToken.Id);
+                    RefreshToken refreshTokenBase = await context.RefreshTokens.FindAsync(refreshToken.RefreshTokenId);
 
                     if (refreshTokenBase != null)
                     {
@@ -58,5 +58,10 @@ namespace ApontamentoTempos.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+    }
+
+    public class RefreshTokenLocal
+    {
+        public Guid RefreshTokenId { get; set; }
     }
 }
