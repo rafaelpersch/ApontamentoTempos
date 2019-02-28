@@ -24,23 +24,40 @@ namespace ApontamentoTempos.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Projeto>>> GetAll(string query, int limit, int page, string orderBy, string ascending, string byColumn)
+        public async Task<ActionResult<IEnumerable<Projeto>>> GetAll(string query, int limit, int page, string orderBy, int ascending, string byColumn)
         {
-            // TODO: Implementar filtros
-
             try
             {
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    /*var result = from s in context.Projetos
-                                   where EF.Functions.Like(s.Nome, "%" + query + "%")
-                                select s;
+                    var count = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).CountAsync();
 
-                    return Ok(await result.ToListAsync());*/
-
-                    //return Ok(await context.Projetos.Where(x => x.Nome.Contains(query)).OrderBy(x => x.Nome).Skip(page).Take(limit).ToListAsync());
-
-                    return Ok(await context.Projetos.ToListAsync());
+                    if (ascending == 1)
+                    {
+                        if (limit > 0 || page > 0)
+                        {
+                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
+                            return Ok(new { registros = registros, count = count });
+                        }
+                        else
+                        {
+                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Nome).ToListAsync();
+                            return Ok(new { registros = registros, count = count });
+                        }
+                    }
+                    else
+                    {
+                        if (limit > 0 || page > 0)
+                        {
+                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
+                            return Ok(new { registros = registros, count = count });
+                        }
+                        else
+                        {
+                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Nome).ToListAsync();
+                            return Ok(new { registros = registros, count = count });
+                        }
+                    }
                 }
             }
             catch
