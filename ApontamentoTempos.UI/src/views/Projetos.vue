@@ -20,13 +20,17 @@
      <v-server-table ref="table" 
           :columns="columns" 
           :options="options">
-          
-        <router-link class="btn btn-primary mt-2" slot="uriEdit" slot-scope="props" :to="{ path: props.row.uriEdit}">
-          <font-awesome-icon icon="pencil-alt" />
-        </router-link>        
-        <button class="btn btn-danger mt-2" slot="uriDelete" slot-scope="props" v-on:click="deleteItem(props.row.uriDelete)">
-          <font-awesome-icon icon="trash" />
-        </button>                
+
+        <template slot="id" scope="props">
+          <div>
+            <router-link class="btn btn-primary mt-2" :to="{ path: '/Principal/Projeto/' + props.row.id }">
+              <font-awesome-icon icon="pencil-alt" />
+            </router-link>        
+            <button class="btn btn-danger mt-2" v-on:click="deleteItem(props.row.id)">
+              <font-awesome-icon icon="trash" />
+            </button>                          
+          </div>  
+        </template>
 
       </v-server-table>
   </div>
@@ -40,11 +44,13 @@ import HttpService from '../services/HttpService.js';
 export default {
   data () {
     return {
-      columns: ['nome', 'uriEdit', 'uriDelete'],
+      columns: ['nome', 'id'],
       options: {
         headings: {
-          uriEdit: '', 
-          uriDelete: '',
+          id: ''
+        },
+        columnsClasses: {
+          id: 'columnsbotoes'
         },
         requestFunction: function (data) {
 
@@ -70,7 +76,7 @@ export default {
           var data = this.getResponseData(resp.registros); 
           var data2 = [];
           for (var key in data) {
-            data2.push({nome:data[key].nome, uriEdit: '/Principal/Projeto/' + data[key].id, uriDelete: data[key].id});
+            data2.push({nome:data[key].nome, id: data[key].id});
           }          
 
           return { data: data2, count: resp.count };
@@ -110,26 +116,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.form-inline label{
-  display: initial;
-}
-
-.VueTables__search{
-  text-align: left;
-  display: none;
-}
-
-.VueTables__limit{
-  text-align: left;
-  display: initial;
-}
-
-th:nth-child(2) {
-  text-align: center;
-}
-
-.VueTables__sortable {
-  width: 50px;
-}
+<style>
+    .columnsbotoes {
+        width: 110px;
+    }
 </style>
