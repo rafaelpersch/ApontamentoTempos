@@ -40,7 +40,7 @@ import HttpService from '../services/HttpService.js';
 export default {
   data () {
     return {
-      columns: ['id', 'nome', 'uriEdit', 'uriDelete'],
+      columns: ['nome', 'uriEdit', 'uriDelete'],
       options: {
         headings: {
           uriEdit: '', 
@@ -51,7 +51,13 @@ export default {
           this.sessionService = new SessionService();
           this.httpService = new HttpService(this.$http, this.sessionService);     
 
-          return this.httpService.get('api/Projeto', false).then(resolve => {
+          return this.httpService.get('api/Projeto?query=' + data.query + 
+                                                 '&ascending=' + data.ascending + 
+                                                 '&byColumn=' + data.byColumn + 
+                                                 '&limit=' + data.limit + 
+                                                 '&orderBy=' + data.orderBy + 
+                                                 '&page=' + data.page, 
+                                                 false).then(resolve => {
 
               if (resolve.status == 200){
                   return resolve.retorno; 
@@ -61,13 +67,13 @@ export default {
           });
         },        
         responseAdapter : function(resp) {
-          var data = this.getResponseData(resp); 
+          var data = this.getResponseData(resp.registros); 
           var data2 = [];
           for (var key in data) {
-            data2.push({id:data[key].id, nome:data[key].nome, uriEdit: '/Principal/Projeto/' + data[key].id, uriDelete: data[key].id});
+            data2.push({nome:data[key].nome, uriEdit: '/Principal/Projeto/' + data[key].id, uriDelete: data[key].id});
           }          
 
-          return { data: data2, count: 20 };
+          return { data: data2, count: resp.count };
         },            
       }
     }
@@ -119,7 +125,11 @@ export default {
   display: initial;
 }
 
-th:nth-child(3) {
-  text-align: left;
+th:nth-child(2) {
+  text-align: center;
+}
+
+.VueTables__sortable {
+  width: 50px;
 }
 </style>
