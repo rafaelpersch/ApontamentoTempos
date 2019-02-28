@@ -10,7 +10,7 @@
 
                 <b-navbar-nav>
                     <b-nav-item :to="{ path: '/Principal/Projetos'}"><font-awesome-icon icon="file" /> Projetos</b-nav-item>
-                    <b-nav-item :to="{ path: '#'}"><font-awesome-icon icon="clock" /> Tempos</b-nav-item>
+                    <b-nav-item :to="{ path: '/Principal/Tempos'}"><font-awesome-icon icon="clock" /> Tempos</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -18,7 +18,7 @@
                     <b-nav-item-dropdown right>
                         <!-- Using button-content slot -->
                         <template slot="button-content">
-                            <em><font-awesome-icon icon="sign-out-alt" />  {{usuario}}</em>
+                            <em><font-awesome-icon icon="user-alt" />  {{usuario}}</em>
                         </template>
                         <b-dropdown-item v-on:click="Sair"><font-awesome-icon icon="sign-out-alt" /> Sair</b-dropdown-item>
                     </b-nav-item-dropdown>
