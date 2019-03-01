@@ -21,49 +21,52 @@
               <input id="projetoId" class="form-control" placeholder="Projeto" required name="projetoId" v-model="input.projetoId" v-validate data-vv-rules="required">
               <span class="erro" v-show="errors.has('projetoId')">{{ errors.first('projetoId') }}</span>              
             </div>
+            <div class="col-md-6" id="produtivo2"  style="text-align: rigth;">
+              <label for="firstName">Produtivo</label><br>
+              <input id="produtivo" type="checkbox" class="checkboxn" name="produtivo" v-model="input.produtivo">
+            </div>            
           </div>
           <div class="row">
             <div class="col-md-6">
               <label for="firstName">Data</label>
-              <input id="data" class="form-control" placeholder="Data" required name="data" v-model="input.data" v-validate data-vv-rules="required">
+              <input id="data" type="date" class="form-control" placeholder="Data" required name="data" v-model="input.data" v-validate data-vv-rules="required">
               <span class="erro" v-show="errors.has('data')">{{ errors.first('data') }}</span>              
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <label for="firstName">Issue</label>
               <input id="issue" class="form-control" placeholder="Issue" required name="issue" v-model="input.issue" v-validate data-vv-rules="required">
               <span class="erro" v-show="errors.has('issue')">{{ errors.first('issue') }}</span>              
-            </div>
+            </div>            
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="firstName">Temp</label>
-              <input id="tempo" class="form-control" placeholder="Tempo" required name="tempo" v-model="input.tempo" v-validate data-vv-rules="required">
+              <label for="firstName">Tempo</label>
+              <input id="tempo" type="number" step="0.01" class="form-control" placeholder="Tempo" required name="tempo" v-model="input.tempo" v-validate data-vv-rules="required">
               <span class="erro" v-show="errors.has('tempo')">{{ errors.first('tempo') }}</span>              
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="firstName">Produtivo</label>
-              <input id="produtivo" class="form-control" placeholder="Produtivo" required name="produtivo" v-model="input.produtivo">
-            </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <label for="firstName">Atividade</label>
-              <input id="atividade" class="form-control" placeholder="atividade" required name="atividade" v-model="input.atividade" v-validate data-vv-rules="required">
-              <span class="erro" v-show="errors.has('atividade')">{{ errors.first('atividade') }}</span>              
-            </div>
-          </div>                              
+              <select id="atividade" class="form-control" placeholder="atividade" required name="atividade" v-model="input.atividade">           
+                <option value="0" selected>Desenvolvimento</option>
+                <option value="1">E-mail</option>
+                <option value="2">Planejamento</option>
+                <option value="3">Ler/Escrever Documento</option>
+                <option value="4">Comunicação Formal</option>
+                <option value="5">Comunicação Informal</option>
+                <option value="6">Navegação Formal</option>
+                <option value="7">Navegação Informal</option>
+                <option value="8">Outros</option>
+              </select>
+            </div>            
+          </div>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <label for="firstName">Observações</label>
-              <input id="observacao" class="form-control" placeholder="Observações" name="observacao" v-model="input.observacao">
+              <textarea id="observacao" class="form-control" placeholder="Observações" name="observacao" v-model="input.observacao"/>
             </div>
           </div>          
           <div class="row">
-            <div class="col-md-6 text-right">
+            <div class="col-md-12 text-right">
               <button class="btn btn-primary mt-2" type="button" v-on:click="save()" :disabled="input.disable"><font-awesome-icon icon="save" /> Gravar</button>
             </div>
           </div>
@@ -85,9 +88,9 @@ export default {
               disable: false,
               id: "00000000-0000-0000-0000-000000000000",
               projetoId : "",
-              data: "":,
+              data: "",
               issue: "",
-              tempo : "",
+              tempo : 0,
               produtivo : false,
               atividade: 0,
               observacao: ""              
@@ -192,6 +195,11 @@ export default {
 
     .erro {
         color: red;
+    } 
+
+    .checkboxn[type=checkbox] {
+      transform: scale(1.5);
+      margin-left: 10px;
     } 
 
 </style>
