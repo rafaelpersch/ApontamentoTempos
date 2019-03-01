@@ -17,11 +17,51 @@
         <form class="needs-validation" v-on:submit.prevent="save()">
           <div class="row">
             <div class="col-md-6">
-              <label for="firstName">Nome</label>
-              <input id="nome" class="form-control" placeholder="Nome" required name="nome" v-model="input.nome" v-validate data-vv-rules="required">
-              <span class="erro" v-show="errors.has('nome')">{{ errors.first('nome') }}</span>              
+              <label for="firstName">Projeto</label>
+              <input id="projetoId" class="form-control" placeholder="Projeto" required name="projetoId" v-model="input.projetoId" v-validate data-vv-rules="required">
+              <span class="erro" v-show="errors.has('projetoId')">{{ errors.first('projetoId') }}</span>              
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="firstName">Data</label>
+              <input id="data" class="form-control" placeholder="Data" required name="data" v-model="input.data" v-validate data-vv-rules="required">
+              <span class="erro" v-show="errors.has('data')">{{ errors.first('data') }}</span>              
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="firstName">Issue</label>
+              <input id="issue" class="form-control" placeholder="Issue" required name="issue" v-model="input.issue" v-validate data-vv-rules="required">
+              <span class="erro" v-show="errors.has('issue')">{{ errors.first('issue') }}</span>              
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="firstName">Temp</label>
+              <input id="tempo" class="form-control" placeholder="Tempo" required name="tempo" v-model="input.tempo" v-validate data-vv-rules="required">
+              <span class="erro" v-show="errors.has('tempo')">{{ errors.first('tempo') }}</span>              
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="firstName">Produtivo</label>
+              <input id="produtivo" class="form-control" placeholder="Produtivo" required name="produtivo" v-model="input.produtivo">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="firstName">Atividade</label>
+              <input id="atividade" class="form-control" placeholder="atividade" required name="atividade" v-model="input.atividade" v-validate data-vv-rules="required">
+              <span class="erro" v-show="errors.has('atividade')">{{ errors.first('atividade') }}</span>              
+            </div>
+          </div>                              
+          <div class="row">
+            <div class="col-md-6">
+              <label for="firstName">Observações</label>
+              <input id="observacao" class="form-control" placeholder="Observações" name="observacao" v-model="input.observacao">
+            </div>
+          </div>          
           <div class="row">
             <div class="col-md-6 text-right">
               <button class="btn btn-primary mt-2" type="button" v-on:click="save()" :disabled="input.disable"><font-awesome-icon icon="save" /> Gravar</button>
@@ -42,9 +82,15 @@ export default {
   data() {
       return {
           input: {
+              disable: false,
               id: "00000000-0000-0000-0000-000000000000",
-              nome: "",
-              disable: false
+              projetoId : "",
+              data: "":,
+              issue: "",
+              tempo : "",
+              produtivo : false,
+              atividade: 0,
+              observacao: ""              
           },
       }
   },
@@ -57,7 +103,14 @@ export default {
 
                   let apontamento = { 
                     Id: this.input.id,
-                    Nome: this.input.nome
+                    UsuarioId : "",
+                    ProjetoId : this.input.projetoId,
+                    Data: this.input.data,
+                    Issue: this.input.issue,
+                    Tempo : this.input.tempo,
+                    Produtivo : this.input.produtivo,
+                    Atividade: this.input.atividade,
+                    Observacao: this.input.observacao,
                   };
 
                   if (apontamento.Id == "00000000-0000-0000-0000-000000000000"){
@@ -121,7 +174,7 @@ export default {
 
         this.httpService.get('api/ApontamentoTempo/' + this.input.id, false).then(resolve => {
           if (resolve.status == 200){
-                this.input.nome = resolve.retorno.nome;
+                //this.input.nome = resolve.retorno.nome;
                 this.input.disable =  false;
           }else{
             this.$toast.error({
