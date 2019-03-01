@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
+import vSelect from 'vue-select';
 import VueRouter from 'vue-router';
 import router from './router';
 import BootstrapVue from 'bootstrap-vue';
@@ -20,6 +21,7 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 library.add(faSave, faSignOutAlt, faClock, faFile, faPlusSquare, faPencilAlt, faTrash, faUserAlt);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.component('v-select', vSelect);
 
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);

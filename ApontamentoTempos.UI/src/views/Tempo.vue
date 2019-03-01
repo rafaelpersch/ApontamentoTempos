@@ -18,8 +18,8 @@
           <div class="row">
             <div class="col-md-6">
               <label for="firstName">Projeto</label>
-              <input id="projetoId" class="form-control" placeholder="Projeto" required name="projetoId" v-model="input.projetoId" v-validate data-vv-rules="required">
-              <span class="erro" v-show="errors.has('projetoId')">{{ errors.first('projetoId') }}</span>              
+              <v-select :options="['foo','bar']" v-model="input.projetoId" v-validate:input.projetoId="'required'" name="projetoId"></v-select>
+              <span v-show="errors.has('projetoId')" class="erro">{{ errors.first('projetoId') }}</span>
             </div>
             <div class="col-md-6" id="produtivo2"  style="text-align: rigth;">
               <label for="firstName">Produtivo</label><br>
@@ -191,7 +191,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
     .erro {
         color: red;
@@ -201,5 +201,13 @@ export default {
       transform: scale(1.5);
       margin-left: 10px;
     } 
+
+    .v-select {
+      background-color: white;
+    }    
+
+    .v-select input[type=search], .v-select input[type=search]:focus {
+      height: calc(2rem);
+    }    
 
 </style>
