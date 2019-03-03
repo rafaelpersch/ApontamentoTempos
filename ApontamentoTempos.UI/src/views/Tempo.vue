@@ -20,7 +20,7 @@
               <label for="firstName">Projeto</label>
               <v-select :options="options" @search="onSearch" :filterable="false" v-model="input.projetoId" v-validate:input.projetoId="'required'" name="projetoId">
                 <template slot="no-options">
-                  type to search GitHub repositories..
+                  Digite.....
                 </template>
                 <template slot="selected-option" scope="option">
                     {{ option.label }}
@@ -102,7 +102,7 @@ export default {
               atividade: 0,
               observacao: ""              
           },
-          options: ["foo", "mimi"]
+          options: []
       }
   },
   methods: {
