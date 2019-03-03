@@ -18,19 +18,19 @@
       </div>
     </div>  
      <v-server-table ref="table" 
-          :columns="columns" 
-          :options="options">
+      :columns="columns" 
+      :options="options">
 
-        <template slot="id" scope="props">
-          <div>
-            <router-link class="btn btn-primary mt-2" :to="{ path: '/Principal/Projeto/' + props.row.id }">
-              <font-awesome-icon icon="pencil-alt" />
-            </router-link>        
-            <button class="btn btn-danger mt-2" v-on:click="deleteItem(props.row.id)">
-              <font-awesome-icon icon="trash" />
-            </button>                          
-          </div>  
-        </template>
+      <template slot="id" scope="props">
+        <div>
+          <router-link class="btn btn-primary mt-2" :to="{ path: '/Principal/Projeto/' + props.row.id }">
+            <font-awesome-icon icon="pencil-alt" />
+          </router-link>        
+          <button class="btn btn-danger mt-2" v-on:click="deleteItem(props.row.id)">
+            <font-awesome-icon icon="trash" />
+          </button>                          
+        </div>  
+      </template>
 
       </v-server-table>
   </div>
@@ -65,11 +65,11 @@ export default {
                                                  '&page=' + data.page, 
                                                  false).then(resolve => {
 
-              if (resolve.status == 200){
-                  return resolve.retorno; 
-              }else{
-                  console.log(resolve);
-              }
+            if (resolve.status == 200){
+                return resolve.retorno; 
+            }else{
+                console.log(resolve);
+            }
           });
         },        
         responseAdapter : function(resp) {
@@ -90,16 +90,15 @@ export default {
       this.httpService.delete('api/Projeto', id, false).then(resolve => {
         if (resolve.status == 200){
           this.$toast.success({
-              title:'Success',
-              message: "Projeto deletado!",
+            title:'Success',
+            message: "Projeto deletado!",
           });                                
           
           this.$refs.table.refresh();
         }else{
-
           this.$toast.error({
-              title:'Ops!',
-              message: resolve.retorno,
+            title:'Ops!',
+            message: resolve.retorno,
           });
         }
       });
@@ -110,14 +109,14 @@ export default {
     this.httpService = new HttpService(this.$http, this.sessionService);
 
     if (this.sessionService.get() === null ){
-        this.$router.replace({ name: "Home" });         
+      this.$router.replace({ name: "Home" });         
     }
   }, 
 }
 </script>
 
 <style>
-    .columnsbotoes {
-        width: 110px;
-    }
+  .columnsbotoes {
+    width: 110px;
+  }
 </style>

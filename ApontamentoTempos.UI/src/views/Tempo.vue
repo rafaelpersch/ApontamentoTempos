@@ -18,7 +18,14 @@
           <div class="row">
             <div class="col-md-6">
               <label for="firstName">Projeto</label>
-              <v-select :options="['foo','bar']" v-model="input.projetoId" v-validate:input.projetoId="'required'" name="projetoId"></v-select>
+              <v-select :options="options" @search="onSearch" :filterable="false" v-model="input.projetoId" v-validate:input.projetoId="'required'" name="projetoId">
+                <template slot="no-options">
+                  type to search GitHub repositories..
+                </template>
+                <template slot="selected-option" scope="option">
+                    {{ option.label }}
+                </template>                
+              </v-select>
               <span v-show="errors.has('projetoId')" class="erro">{{ errors.first('projetoId') }}</span>
             </div>
             <div class="col-md-6" id="produtivo2"  style="text-align: rigth;">
@@ -95,9 +102,32 @@ export default {
               atividade: 0,
               observacao: ""              
           },
+          options: ["foo", "mimi"]
       }
   },
   methods: {
+      onSearch(search, loading) {
+        loading(true);
+        this.search(loading, search, this);
+      },
+      search(loading, search, vm) {
+        this.httpService.get('api/Projeto?query=' + search, false).then(resolve => {
+
+        if (resolve.status == 200){
+
+          var data = resolve.retorno.registros; 
+          var data2 = [];
+          for (var key in data) {
+            data2.push({label:data[key].nome,  nome:data[key].nome, id: data[key].id});
+          }          
+
+          vm.options = data2;
+            loading(false);
+          }else{
+            loading(false);
+          }
+        })
+      },                  
       save(){
           this.$validator.validateAll().then(success => {
               if(success) {
@@ -177,7 +207,6 @@ export default {
 
         this.httpService.get('api/ApontamentoTempo/' + this.input.id, false).then(resolve => {
           if (resolve.status == 200){
-                //this.input.nome = resolve.retorno.nome;
                 this.input.disable =  false;
           }else{
             this.$toast.error({
@@ -192,9 +221,8 @@ export default {
 </script>
 
 <style>
-
     .erro {
-        color: red;
+      color: red;
     } 
 
     .checkboxn[type=checkbox] {
@@ -209,5 +237,4 @@ export default {
     .v-select input[type=search], .v-select input[type=search]:focus {
       height: calc(2rem);
     }    
-
 </style>
