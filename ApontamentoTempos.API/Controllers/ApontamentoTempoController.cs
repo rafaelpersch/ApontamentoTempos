@@ -92,6 +92,7 @@ namespace ApontamentoTempos.API.Controllers
                     return BadRequest("Ids não conferem!");
                 }
 
+                apontamentoTempo.UsuarioId = Guid.Parse(User.Claims.Where(x => x.Type == "id_user").FirstOrDefault().Value);
                 apontamentoTempo.Validar();
 
                 using (var context = new MyDbContext(config["ConnectionString"]))
@@ -115,6 +116,7 @@ namespace ApontamentoTempos.API.Controllers
             try
             {
                 apontamentoTempo.Id = Guid.NewGuid();
+                apontamentoTempo.UsuarioId = Guid.Parse(User.Claims.Where(x => x.Type == "id_user").FirstOrDefault().Value);
                 apontamentoTempo.Validar();
 
                 using (var context = new MyDbContext(config["ConnectionString"]))
