@@ -136,8 +136,8 @@ export default {
 
                   let apontamento = { 
                     Id: this.input.id,
-                    UsuarioId : "",
-                    ProjetoId : this.input.projetoId,
+                    UsuarioId : "00000000-0000-0000-0000-000000000000",
+                    ProjetoId : this.input.projetoId.id,
                     Data: this.input.data,
                     Issue: this.input.issue,
                     Tempo : this.input.tempo,
@@ -157,7 +157,7 @@ export default {
                         
                         this.input.disable = false;
 
-                        this.$router.replace({ path: '/Principal/Tempo' });
+                        this.$router.replace({ path: '/Principal/Tempos' });
                       }else{
                         this.input.disable = false;
 
