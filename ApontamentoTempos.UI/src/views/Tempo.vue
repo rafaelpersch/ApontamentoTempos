@@ -102,7 +102,7 @@ export default {
               atividade: 0,
               observacao: ""              
           },
-          options: []
+          options: [],
       }
   },
   methods: {
@@ -118,7 +118,7 @@ export default {
           var data = resolve.retorno.registros; 
           var data2 = [];
           for (var key in data) {
-            data2.push({label:data[key].nome,  nome:data[key].nome, id: data[key].id});
+            data2.push({label:data[key].nome, id: data[key].id});
           }          
 
           vm.options = data2;
@@ -207,17 +207,15 @@ export default {
 
         this.httpService.get('api/ApontamentoTempo/' + this.input.id, false).then(resolve => {
           if (resolve.status == 200){
+                this.options = [{label: resolve.retorno.projeto.nome, id: resolve.retorno.projeto.id}];
                 this.input.disable =  false;
+                this.input.projetoId= {label: resolve.retorno.projeto.nome, id: resolve.retorno.projeto.id};
                 this.input.observacao = resolve.retorno.observacao;
                 this.input.data = resolve.retorno.dataYYYYMMDD;
                 this.input.issue = resolve.retorno.issue;
                 this.input.tempo = resolve.retorno.tempo;
                 this.input.produtivo = resolve.retorno.produtivo;
                 this.input.atividade = resolve.retorno.atividade;
-
-                /* 
-              projetoId : "",
-                */
           }else{
             this.$toast.error({
                 title:'Ops!',
