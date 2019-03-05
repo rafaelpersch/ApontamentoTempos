@@ -44,7 +44,7 @@ import HttpService from '../services/HttpService.js';
 export default {
   data () {
     return {
-      columns: ['issue', 'id'],
+      columns: ['data', 'projeto', 'issue', 'id'],
       options: {
         headings: {
           id: ''
@@ -76,7 +76,7 @@ export default {
           var data = this.getResponseData(resp.registros); 
           var data2 = [];
           for (var key in data) {
-            data2.push({issue:data[key].issue, id: data[key].id});
+            data2.push({data:data[key].datastring, projeto:data[key].projeto.nome, issue:data[key].issue, id: data[key].id});
           }          
 
           return { data: data2, count: resp.count };
