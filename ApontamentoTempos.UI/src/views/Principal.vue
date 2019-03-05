@@ -20,7 +20,7 @@
                         <template slot="button-content">
                             <em><font-awesome-icon icon="user-alt" />  {{usuario}}</em>
                         </template>
-                        <b-dropdown-item v-on:click="TrocarSenha"><font-awesome-icon icon="sign-out-alt" /> Trocar Senha</b-dropdown-item>
+                        <b-dropdown-item v-on:click="TrocarSenha"><font-awesome-icon icon="key" /> Trocar Senha</b-dropdown-item>
                         <b-dropdown-item v-on:click="Sair"><font-awesome-icon icon="sign-out-alt" /> Sair</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
