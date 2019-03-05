@@ -65,7 +65,7 @@
                         }, true).then(resolve => {
                             if (resolve.status == 200){
                                 this.sessionService.set(resolve.retorno);
-                                this.$router.replace({ name: "Principal" });
+                                this.$router.replace({ name: "Dashboard" });
                                 this.input.disable = false;
                             }else{
                                 this.input.disable = false;
@@ -85,7 +85,7 @@
             this.httpService = new HttpService(this.$http, this.sessionService);
 
             if (this.sessionService.get() !== null ){
-                this.$router.replace({ name: "Principal" });         
+                this.$router.replace({ name: "Dashboard" });         
             }
         },
     }

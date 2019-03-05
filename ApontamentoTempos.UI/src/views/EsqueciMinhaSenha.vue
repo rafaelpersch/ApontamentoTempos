@@ -78,7 +78,7 @@
             this.httpService = new HttpService(this.$http, this.sessionService);
 
             if (this.sessionService.get() !== null ){
-                this.$router.replace({ name: "Principal" });         
+                this.$router.replace({ name: "Dashboard" });         
             }
 
         },
