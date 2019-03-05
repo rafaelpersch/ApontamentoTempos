@@ -37,6 +37,15 @@ namespace ApontamentoTempos.API.Model
         public Guid ProjetoId { get; set; }
         public virtual Projeto Projeto { get; set; }
         public DateTime Data { get; set; }
+
+        public string DataString 
+        { 
+            get
+            {
+                return this.Data.ToString("dd/MM/yyyy");
+            } 
+        }
+
         [Required]
         public string Issue { get; set; }
         [Required]
