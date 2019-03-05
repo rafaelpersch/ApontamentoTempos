@@ -30,18 +30,18 @@ namespace ApontamentoTempos.API.Controllers
             {
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    var count = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).CountAsync();
+                    var count = await context.ApontamentoTempos.Where(x => x.UsuarioId == Guid.Parse(User.Claims.Where(b => b.Type == "id_user").FirstOrDefault().Value) && x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).CountAsync();
 
                     if (ascending == 1)
                     {
                         if (limit > 0 || page > 0)
                         {
-                            var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Projeto.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
+                            var registros = await context.ApontamentoTempos.Where(x => x.UsuarioId == Guid.Parse(User.Claims.Where(b => b.Type == "id_user").FirstOrDefault().Value) && x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Projeto.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
                             return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                         else
                         {
-                            var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Projeto.Nome).ToListAsync();
+                            var registros = await context.ApontamentoTempos.Where(x => x.UsuarioId == Guid.Parse(User.Claims.Where(b => b.Type == "id_user").FirstOrDefault().Value) && x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Projeto.Nome).ToListAsync();
                             return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                     }
@@ -49,12 +49,12 @@ namespace ApontamentoTempos.API.Controllers
                     {
                         if (limit > 0 || page > 0)
                         {
-                            var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Projeto.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
+                            var registros = await context.ApontamentoTempos.Where(x => x.UsuarioId == Guid.Parse(User.Claims.Where(b => b.Type == "id_user").FirstOrDefault().Value) && x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Projeto.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
                             return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                         else
                         {
-                            var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Projeto.Nome).ToListAsync();
+                            var registros = await context.ApontamentoTempos.Where(x => x.UsuarioId == Guid.Parse(User.Claims.Where(b => b.Type == "id_user").FirstOrDefault().Value) && x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Projeto.Nome).ToListAsync();
                             return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                     }
