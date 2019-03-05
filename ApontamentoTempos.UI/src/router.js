@@ -25,6 +25,7 @@ export default new Router({
                  { path: 'Projeto/:id', component: Projeto, props: true }, 
                  { path: 'Projetos', component: Projetos },
                  { path: 'Tempo', component: Tempo },
+                 { path: 'Tempo/:id', component: Tempo, props: true }, 
                  { path: 'Tempos', component: Tempos } ] 
     },
   ]

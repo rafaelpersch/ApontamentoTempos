@@ -208,6 +208,16 @@ export default {
         this.httpService.get('api/ApontamentoTempo/' + this.input.id, false).then(resolve => {
           if (resolve.status == 200){
                 this.input.disable =  false;
+                this.input.observacao = resolve.retorno.observacao;
+                this.input.data = resolve.retorno.dataYYYYMMDD;
+                this.input.issue = resolve.retorno.issue;
+                this.input.tempo = resolve.retorno.tempo;
+                this.input.produtivo = resolve.retorno.produtivo;
+                this.input.atividade = resolve.retorno.atividade;
+
+                /* 
+              projetoId : "",
+                */
           }else{
             this.$toast.error({
                 title:'Ops!',
