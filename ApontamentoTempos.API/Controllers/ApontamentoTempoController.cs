@@ -73,7 +73,17 @@ namespace ApontamentoTempos.API.Controllers
             {
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    return Ok(await context.ApontamentoTempos.FindAsync(id));
+                    var tempo = await context.ApontamentoTempos.FindAsync(id);
+
+                    if (tempo == null)
+                    {
+                        return Ok(null);
+                    }
+
+                    var tempos = new List<ApontamentoTempo>();
+                    tempos.Add(tempo);
+
+                    return Ok(ApontamentoTempo.GerarListaEstatica(tempos)[0]);
                 }
             }
             catch (Exception ex)

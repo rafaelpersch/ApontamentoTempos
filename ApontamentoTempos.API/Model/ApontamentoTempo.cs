@@ -38,12 +38,20 @@ namespace ApontamentoTempos.API.Model
         public virtual Projeto Projeto { get; set; }
         public DateTime Data { get; set; }
 
-        public string DataString 
+        public string DataDDMMYYYY
         { 
             get
             {
                 return this.Data.ToString("dd/MM/yyyy");
             } 
+        }
+
+        public string DataYYYYMMDD
+        {
+            get
+            {
+                return this.Data.ToString("yyyy-MM-dd");
+            }
         }
 
         [Required]
