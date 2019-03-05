@@ -19,30 +19,53 @@
 </template>
 
 <script>
-//import { GChart } from 'vue-google-charts';
+import SessionService from '../services/SessionService';
+import HttpService from '../services/HttpService.js';
 
 export default {
   data () {
     return {
       // Array will be automatically processed with visualization.arrayToDataTable function
-      chartData: [
-        ['Year', 'Sales', 'Expenses', 'Profit'],
-        ['2014', 1000, 400, 200],
-        ['2015', 1170, 460, 250],
-        ['2016', 660, 1120, 300],
-        ['2017', 1030, 540, 350]
-      ],
+      chartData: [[]],
       chartOptions: {
         chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+          title: '',
+          subtitle: '',
         }
       }
     }
-  }
+  },
+  created() {
+    this.sessionService = new SessionService();
+    this.httpService = new HttpService(this.$http, this.sessionService);
+
+    if (this.sessionService.get() === null ){
+        this.$router.replace({ name: "Home" });         
+    }
+
+    this.httpService.get('api/Dashboard', false).then(resolve => {
+
+        if (resolve.status == 200){
+
+          this.chartData = [
+            ['', 'Tempoos'],
+            [resolve.retorno[0].dia, resolve.retorno[0].tempo],
+            [resolve.retorno[1].dia, resolve.retorno[1].tempo],
+            [resolve.retorno[2].dia, resolve.retorno[2].tempo],
+            [resolve.retorno[3].dia, resolve.retorno[3].tempo],
+            [resolve.retorno[4].dia, resolve.retorno[4].tempo],
+            [resolve.retorno[5].dia, resolve.retorno[5].tempo],
+            [resolve.retorno[6].dia, resolve.retorno[6].tempo]
+          ];          
+        }else{
+          this.chartData = [
+                  ['', 'Tempoos']
+          ];
+        }
+    });         
+  },   
 }
 </script>
-
 <style scoped>
 
 </style>
