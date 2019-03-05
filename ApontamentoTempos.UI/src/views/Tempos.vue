@@ -44,7 +44,7 @@ import HttpService from '../services/HttpService.js';
 export default {
   data () {
     return {
-      columns: ['nome', 'id'],
+      columns: ['issue', 'id'],
       options: {
         headings: {
           id: ''
@@ -65,18 +65,18 @@ export default {
                                                  '&page=' + data.page, 
                                                  false).then(resolve => {
 
-              if (resolve.status == 200){
-                  return resolve.retorno; 
-              }else{
-                  console.log(resolve);
-              }
+            if (resolve.status == 200){
+                return resolve.retorno; 
+            }else{
+                console.log(resolve);
+            }
           });
         },        
         responseAdapter : function(resp) {
           var data = this.getResponseData(resp.registros); 
           var data2 = [];
           for (var key in data) {
-            data2.push({nome:data[key].nome, id: data[key].id});
+            data2.push({issue:data[key].issue, id: data[key].id});
           }          
 
           return { data: data2, count: resp.count };
