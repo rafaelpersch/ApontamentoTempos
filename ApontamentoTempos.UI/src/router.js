@@ -11,6 +11,7 @@ const Projetos = () => import('./views/Projetos.vue');
 const Tempo = () => import('./views/Tempo.vue');
 const Tempos = () => import('./views/Tempos.vue');
 const Dashboard = () => import('./views/Dashboard.vue');
+const TrocaSenha = () => import('./views/TrocaSenha.vue');
 
 Vue.use(Router)
 
@@ -23,6 +24,7 @@ export default new Router({
     { path: '/RecuperacaoSenha/:id', name: 'RecuperacaoSenha', component: RecuperacaoSenha, props: true  },
     { path: "/Principal", name: "Principal", component: Principal, 
       children: [{ path: 'Dashboard', name: 'Dashboard', component: Dashboard }, 
+                 { path: 'TrocaSenha', name: 'TrocaSenha', component: TrocaSenha }, 
                  { path: 'Projeto', component: Projeto }, 
                  { path: 'Projeto/:id', component: Projeto, props: true }, 
                  { path: 'Projetos', component: Projetos },
