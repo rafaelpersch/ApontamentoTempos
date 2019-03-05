@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -84,6 +85,34 @@ namespace ApontamentoTempos.API.Model
             {
                 throw new ApplicationException("Data inválida!");
             }
+        }
+
+        public static List<ApontamentoTempo> GerarListaEstatica(List<ApontamentoTempo> src)
+        {
+            var dest = new List<ApontamentoTempo>();
+
+            if (src != null)
+            {
+                foreach (ApontamentoTempo a in src)
+                {
+                    dest.Add(new ApontamentoTempo()
+                    {
+                        Id = a.Id,
+                        Atividade = a.Atividade,
+                        Data = a.Data,
+                        Issue = a.Issue,
+                        Observacao = a.Observacao,
+                        Produtivo = a.Produtivo,
+                        ProjetoId = a.ProjetoId,
+                        Projeto = new Projeto() { Id = a.Projeto.Id, Nome = a.Projeto.Nome },
+                        UsuarioId = a.UsuarioId,
+                        Usuario = new Usuario() { Id = a.Usuario.Id, Nome = a.Usuario.Nome },
+                        Tempo = a.Tempo,
+                    });
+                }
+            }
+
+            return dest;
         }
     }
 }

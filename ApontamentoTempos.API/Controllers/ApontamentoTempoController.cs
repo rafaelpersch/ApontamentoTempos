@@ -37,12 +37,12 @@ namespace ApontamentoTempos.API.Controllers
                         if (limit > 0 || page > 0)
                         {
                             var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Projeto.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
-                            return Ok(new { registros = registros, count = count });
+                            return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                         else
                         {
                             var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Projeto.Nome).ToListAsync();
-                            return Ok(new { registros = registros, count = count });
+                            return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                     }
                     else
@@ -50,12 +50,12 @@ namespace ApontamentoTempos.API.Controllers
                         if (limit > 0 || page > 0)
                         {
                             var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Projeto.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
-                            return Ok(new { registros = registros, count = count });
+                            return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                         else
                         {
                             var registros = await context.ApontamentoTempos.Where(x => x.Projeto.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Projeto.Nome).ToListAsync();
-                            return Ok(new { registros = registros, count = count });
+                            return Ok(new { registros = ApontamentoTempo.GerarListaEstatica(registros), count = count });
                         }
                     }
                 }
