@@ -7,6 +7,7 @@ import BootstrapVue from 'bootstrap-vue';
 import VueResource from 'vue-resource';
 import VeeValidate from 'vee-validate';
 import CxltToastr from 'cxlt-vue2-toastr';
+import VueGoogleCharts from 'vue-google-charts';
 import msg from './pt_BR';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSave, faSignOutAlt, faClock, faFile, faPlusSquare, faPencilAlt, faTrash, faUserAlt } from '@fortawesome/free-solid-svg-icons';
@@ -28,6 +29,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(ClientTable);
 Vue.use(ServerTable);
+Vue.use(VueGoogleCharts);
 
 var toastrConfigs = {
   position: 'top full width',
