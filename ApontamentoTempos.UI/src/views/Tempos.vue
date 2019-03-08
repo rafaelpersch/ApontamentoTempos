@@ -46,6 +46,9 @@ export default {
     return {
       columns: ['data', 'projeto', 'issue', 'id'],
       options: {
+	    orderBy: {
+			ascending: false
+		},
         headings: {
           id: ''
         },
