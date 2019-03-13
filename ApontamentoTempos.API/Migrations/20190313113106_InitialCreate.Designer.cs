@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApontamentoTempos.API.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20190221022252_initial")]
-    partial class initial
+    [Migration("20190313113106_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
