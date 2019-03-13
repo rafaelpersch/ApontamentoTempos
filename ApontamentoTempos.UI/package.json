@@ -9,7 +9,6 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "hostApi": "https://localhost:5001",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.10",
     "@fortawesome/free-brands-svg-icons": "^5.6.1",
