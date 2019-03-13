@@ -16,6 +16,7 @@
                 </div>
                 <input id="repetirSenha" class="form-control" placeholder="Repetir Senha" required type="password" name="repetirSenha" v-model="input.repetirSenha" v-validate data-vv-rules="required|confirmed:senha">                        
                 <span class="erro" v-show="errors.has('repetirSenha')">{{ errors.first('repetirSenha') }}</span>
+                <br>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="recuperarSenha()" :disabled="input.disable">Recuperar Senha</button>
                 <br>
                 <b-col sm="12" v-if="input.disable">

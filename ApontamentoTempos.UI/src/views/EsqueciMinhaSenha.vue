@@ -10,6 +10,7 @@
                 </div>            
                 <input id="email" class="form-control" placeholder="E-mail" required autofocus type="email" name="email" v-model="input.email" v-validate data-vv-rules="required|email">
                 <span class="erro" v-show="errors.has('email')">{{ errors.first('email') }}</span>
+                <br>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="esqueciMinhaSenha()" :disabled="input.disable">Recuperar Senha</button>
                 <br>
                 <b-col sm="12" v-if="input.disable">

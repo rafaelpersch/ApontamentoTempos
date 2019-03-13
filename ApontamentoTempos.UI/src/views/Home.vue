@@ -15,6 +15,7 @@
                 </div>
                 <input id="senha" class="form-control" placeholder="Senha" required type="password" name="senha" v-model="input.senha" v-validate data-vv-rules="required" ref="senha">
                 <span class="erro" v-show="errors.has('senha')">{{ errors.first('senha') }}</span>
+                <br>
                 <button class="btn btn-lg btn-primary btn-block" type="button" v-on:click="login()" :disabled="input.disable">Entrar</button>
                 <br>
                 <b-col sm="12" v-if="input.disable">
