@@ -48,7 +48,7 @@ export default {
         if (resolve.status == 200){
 
           this.chartData = [
-            ['', 'Tempoos'],
+            ['', 'Tempos'],
             [resolve.retorno[0].dia, resolve.retorno[0].tempo],
             [resolve.retorno[1].dia, resolve.retorno[1].tempo],
             [resolve.retorno[2].dia, resolve.retorno[2].tempo],
@@ -59,7 +59,7 @@ export default {
           ];          
         }else{
           this.chartData = [
-                  ['', 'Tempoos']
+                  ['', 'Tempos']
           ];
         }
     });         
