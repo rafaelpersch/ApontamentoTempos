@@ -13,7 +13,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSave, faSignOutAlt, faClock, faFile, faPlusSquare, faPencilAlt, faTrash, faUserAlt, faKey } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { ServerTable, ClientTable} from 'vue-tables-2';
-import { hostApi } from '../package.json';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -39,7 +38,11 @@ var toastrConfigs = {
 
 Vue.use(CxltToastr, toastrConfigs);
 
-Vue.http.options.root = hostApi.toString();
+if (process.env.NODE_ENV === 'production'){
+  Vue.http.options.root = "http://localhost:81";
+}else{
+  Vue.http.options.root = "https://localhost:5001";
+}
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 Vue.http.headers.common['Content-Type'] = 'application/json';
 
@@ -51,8 +54,6 @@ Vue.use(VeeValidate, {
     }
   }
 });
-
-Vue.config.productionTip = false
 
 new Vue({
   router,
