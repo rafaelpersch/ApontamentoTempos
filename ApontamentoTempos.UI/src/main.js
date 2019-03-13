@@ -39,7 +39,7 @@ var toastrConfigs = {
 Vue.use(CxltToastr, toastrConfigs);
 
 if (process.env.NODE_ENV === 'production'){
-  Vue.http.options.root = "http://localhost:81";
+  Vue.http.options.root = "http://52.67.198.123:81";
 }else{
   Vue.http.options.root = "https://localhost:5001";
 }
