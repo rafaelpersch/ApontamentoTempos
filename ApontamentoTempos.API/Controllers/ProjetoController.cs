@@ -28,20 +28,25 @@ namespace ApontamentoTempos.API.Controllers
         {
             try
             {
+                if (query == null)
+                {
+                    query = string.Empty;
+                }
+
                 using (var context = new MyDbContext(config["ConnectionString"]))
                 {
-                    var count = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).CountAsync();
+                    var count = await context.Projetos.Where(x => x.Nome.Trim().ToLower().Contains((string.IsNullOrEmpty(query)) ? string.Empty : query.Trim().ToLower())).CountAsync();
 
                     if (ascending == 1)
                     {
                         if (limit > 0 || page > 0)
                         {
-                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
+                            var registros = await context.Projetos.Where(x => x.Nome.Trim().ToLower().Contains((string.IsNullOrEmpty(query)) ? string.Empty : query.Trim().ToLower())).OrderBy(x => x.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
                             return Ok(new { registros = registros, count = count });
                         }
                         else
                         {
-                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderBy(x => x.Nome).ToListAsync();
+                            var registros = await context.Projetos.Where(x => x.Nome.Trim().ToLower().Contains((string.IsNullOrEmpty(query)) ? string.Empty : query.Trim().ToLower())).OrderBy(x => x.Nome).ToListAsync();
                             return Ok(new { registros = registros, count = count });
                         }
                     }
@@ -49,12 +54,12 @@ namespace ApontamentoTempos.API.Controllers
                     {
                         if (limit > 0 || page > 0)
                         {
-                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
+                            var registros = await context.Projetos.Where(x => x.Nome.Trim().ToLower().Contains((string.IsNullOrEmpty(query)) ? string.Empty : query.Trim().ToLower())).OrderByDescending(x => x.Nome).Skip((page - 1) * limit).Take(limit).ToListAsync();
                             return Ok(new { registros = registros, count = count });
                         }
                         else
                         {
-                            var registros = await context.Projetos.Where(x => x.Nome.Contains((string.IsNullOrEmpty(query)) ? string.Empty : query)).OrderByDescending(x => x.Nome).ToListAsync();
+                            var registros = await context.Projetos.Where(x => x.Nome.Trim().ToLower().Contains((string.IsNullOrEmpty(query)) ? string.Empty : query.Trim().ToLower())).OrderByDescending(x => x.Nome).ToListAsync();
                             return Ok(new { registros = registros, count = count });
                         }
                     }
