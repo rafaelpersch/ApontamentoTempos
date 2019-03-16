@@ -53,7 +53,7 @@
                 this.$router.replace({ name: "TrocaSenha" });
             },             
             Sair() {
-                this.sessionService.set(null);
+                this.sessionService.remove();
                 this.$router.replace({ name: "Home" });
             }
         },
@@ -63,16 +63,16 @@
 
             if (this.sessionService.get() === null ){
                 this.$router.replace({ name: "Home" });         
+            }else{
+                this.httpService.get('api/UsuarioLogado', false).then(resolve => {
+
+                    if (resolve.status == 200){
+                        this.usuario = resolve.retorno;
+                    }else{
+                        this.Sair();
+                    }
+                });          
             }
-
-            this.httpService.get('api/UsuarioLogado', false).then(resolve => {
-
-                if (resolve.status == 200){
-                    this.usuario = resolve.retorno;
-                }else{
-                    this.Sair();
-                }
-            });          
         },
     }
 </script>

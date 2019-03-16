@@ -7,4 +7,8 @@ export default class SessionService {
     set(token) {
         localStorage.setItem('ApontamentoTempos', JSON.stringify(token));
     }
+
+    remove(){
+        localStorage.removeItem('ApontamentoTempos');
+    }
 }
