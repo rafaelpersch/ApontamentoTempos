@@ -12,7 +12,7 @@ export default class HttpService {
 
             if (!anonymous){
                 if (this.sessionService.get() === null){
-                    resolve({ sucesso: false, retorno: "UsuÃ¡rio Desconectado", status: 401 });
+                    resolve({ sucesso: false, retorno: "Usuário Desconectado", status: 401 });
                 }else{
                     myHeaders = { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken };
                 }
@@ -30,9 +30,19 @@ export default class HttpService {
                 }            
             }, err => {
                 if (err.status == 401) {
-                    this.sessionService.remove();
-                }   
-                resolve({ sucesso: false, retorno: err.body, status: err.status });
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
+                        if (res.status == 200){
+                            this.sessionService.set(res.body);
+                            resolve(this.post(url, obj, anonymous));
+                        }else{
+                            resolve({ sucesso: false, retorno: "401 Unauthorized", status: 401 });
+                        }            
+                    }, err => {
+                        resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
+                    });
+                }else{
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });
         });
     }
@@ -45,7 +55,7 @@ export default class HttpService {
 
             if (!anonymous){
                 if (this.sessionService.get() === null){
-                    resolve({ sucesso: false, retorno: "UsuÃ¡rio Desconectado", status: 401 });
+                    resolve({ sucesso: false, retorno: "Usuário Desconectado", status: 401 });
                 }else{
                     myHeaders = { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken };
                 }
@@ -62,9 +72,19 @@ export default class HttpService {
                 }
             }, err => {
                 if (err.status == 401) {
-                    this.sessionService.remove();
-                }   
-                resolve({ sucesso: false, retorno: err.body, status: err.status });             
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
+                        if (res.status == 200){
+                            this.sessionService.set(res.body);
+                            resolve(this.get(url, anonymous));
+                        }else{
+                            resolve({ sucesso: false, retorno: "401 Unauthorized", status: 401 });
+                        }            
+                    }, err => {
+                        resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
+                    });
+                }else{
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });             
         });
     }
@@ -76,7 +96,7 @@ export default class HttpService {
 
             if (!anonymous){
                 if (this.sessionService.get() === null){
-                    resolve({ sucesso: false, retorno: "UsuÃ¡rio Desconectado", status: 401 });
+                    resolve({ sucesso: false, retorno: "Usuário Desconectado", status: 401 });
                 }else{
                     myHeaders = { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken };
                 }
@@ -93,9 +113,19 @@ export default class HttpService {
                 }
             }, err => {
                 if (err.status == 401) {
-                    this.sessionService.remove();
-                }   
-                resolve({ sucesso: false, retorno: err.body, status: err.status });          
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
+                        if (res.status == 200){
+                            this.sessionService.set(res.body);
+                            resolve(this.put(url, id, obj, anonymous));
+                        }else{
+                            resolve({ sucesso: false, retorno: "401 Unauthorized", status: 401 });
+                        }            
+                    }, err => {
+                        resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
+                    });
+                }else{
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });            
         });
     }
@@ -107,7 +137,7 @@ export default class HttpService {
 
             if (!anonymous){
                 if (this.sessionService.get() === null){
-                    resolve({ sucesso: false, retorno: "UsuÃ¡rio Desconectado", status: 401 });
+                    resolve({ sucesso: false, retorno: "Usuário Desconectado", status: 401 });
                 }else{
                     myHeaders = { 'Authorization': 'Bearer ' + this.sessionService.get().accessToken };
                 }
@@ -124,9 +154,19 @@ export default class HttpService {
                 }
             }, err => {
                 if (err.status == 401) {
-                    this.sessionService.remove();
-                }   
-                resolve({ sucesso: false, retorno: err.body, status: err.status });          
+                    this.resource.post('api/RefreshToken', { RefreshTokenId : this.sessionService.get().refreshToken }).then(res => {
+                        if (res.status == 200){
+                            this.sessionService.set(res.body);
+                            resolve(this.delte(url, id, anonymous));
+                        }else{
+                            resolve({ sucesso: false, retorno: "401 Unauthorized", status: 401 });
+                        }            
+                    }, err => {
+                        resolve({ sucesso: false, retorno: "401 Unauthorized: " + err, status: 401 });
+                    });
+                }else{
+                    resolve({ sucesso: false, retorno: err.body, status: err.status });
+                }                
             });             
         });
     }

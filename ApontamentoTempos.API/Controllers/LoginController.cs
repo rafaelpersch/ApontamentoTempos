@@ -39,6 +39,14 @@ namespace ApontamentoTempos.API.Controllers
                         {
                             Token token = TokenConfigurations.GenerateToken(usuarioCadatrado, signingConfigurations, tokenConfigurations);
 
+                            await context.RefreshTokens.AddAsync(new RefreshToken()
+                            {
+                                Id = token.RefreshToken,
+                                UsuarioId = usuarioCadatrado.Id,
+                            });
+
+                            await context.SaveChangesAsync();
+
                             return Ok(token);
                         }
                     }
