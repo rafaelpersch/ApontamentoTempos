@@ -22,7 +22,6 @@ namespace ApontamentoTempos.API.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<RecuperacaoSenha> RecuperacaoSenhas { get; set; }
         public DbSet<ApontamentoTempo> ApontamentoTempos { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
